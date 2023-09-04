@@ -11,7 +11,7 @@
     <groupId>beinet.cn</groupId>
     <artifactId>logdemo-redis</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>logdemo-redis</name>
+    <name>log-demo-redis</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
