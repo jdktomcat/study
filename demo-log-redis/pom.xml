@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>beinet.cn</groupId>
-    <artifactId>logdemo-redis</artifactId>
+    <artifactId>demo-log-redis</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>log-demo-redis</name>
+    <name>demo-log-redis</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
