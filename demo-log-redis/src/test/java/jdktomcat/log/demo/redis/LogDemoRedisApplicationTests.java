@@ -1,4 +1,4 @@
-package beinet.cn.logdemoredis;
+package jdktomcat.log.demo.redis;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.time.Duration;
 
 @SpringBootTest
-class LogdemoRedisApplicationTests {
+class LogDemoRedisApplicationTests {
     @Qualifier("redisTemplate")
     @Autowired
     RedisTemplate redis;

@@ -1,4 +1,4 @@
-package beinet.cn.logdemoredis;
+package jdktomcat.log.demo.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -6,15 +6,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.time.Duration;
 
 @SpringBootApplication
-public class LogdemoRedisApplication implements CommandLineRunner {
+public class LogDemoRedisApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(LogdemoRedisApplication.class, args);
+        SpringApplication.run(LogDemoRedisApplication.class, args);
     }
 
     @Qualifier("redisTemplate")
@@ -22,7 +21,7 @@ public class LogdemoRedisApplication implements CommandLineRunner {
     RedisTemplate redis;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         redis.opsForValue().setIfAbsent("bbb", "ddd");
         redis.opsForValue().set("aaa", "bbb", Duration.ofMinutes(1));
         Object ret = redis.opsForValue().get("aaa");
