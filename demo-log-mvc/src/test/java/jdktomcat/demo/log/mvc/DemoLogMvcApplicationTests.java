@@ -1,4 +1,4 @@
-package beinet.cn.demologmvc;
+package jdktomcat.demo.log.mvc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

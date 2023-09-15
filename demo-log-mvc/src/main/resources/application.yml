@@ -4,7 +4,7 @@ logging:
     org.zalando.logbook: trace
 
 logbook:
-  exclude: # 不记录日志的路径
+  exclude:
     - "**.html"
     - "**.htm"
     - "**.js"
