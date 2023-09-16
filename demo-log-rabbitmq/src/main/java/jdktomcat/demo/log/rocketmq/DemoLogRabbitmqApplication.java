@@ -1,7 +1,7 @@
-package beinet.cn.demolograbbitmq;
+package jdktomcat.demo.log.rocketmq;
 
-import beinet.cn.demolograbbitmq.rabbit.Producer;
-import beinet.cn.demolograbbitmq.util.Dto;
+import jdktomcat.demo.log.rocketmq.rabbit.Producer;
+import jdktomcat.demo.log.rocketmq.util.Dto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

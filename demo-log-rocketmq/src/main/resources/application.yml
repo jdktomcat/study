@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: demo-log-rocketmq
+
+rocketmq:
+  namesrvAddr: 172.21.101.3:9876
+  producer:
+    groupName: tradeNoProducerGroup
+    instanceName: tradeNoProducer
+    maxMessageSize: 131072
+    sendMsgTimeout: 10000
+  consumer:
+    groupName: tradeNoConsumerGroup
+    instanceName: tradeNoConsumer
+    consumeThreadMin: 20
+    consumeThreadMax: 64
+    batchMaxSize: 1
+
+logging:
+  level:
+    jdktomcat.demo.log.rocketmq.rabbit.RabbitAdvice: debug

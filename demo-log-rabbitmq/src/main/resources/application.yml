@@ -16,4 +16,4 @@ spring:
 
 logging:
   level:
-    beinet.cn.demolograbbitmq.rabbit.RabbitAdvice: debug
+    jdktomcat.demo.log.rocketmq.rabbit.RabbitAdvice: debug
