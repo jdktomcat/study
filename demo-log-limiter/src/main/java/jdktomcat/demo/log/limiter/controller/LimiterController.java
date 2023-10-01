@@ -16,7 +16,7 @@ public class LimiterController {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public LimiterController(RedisTemplate<String,String> redisTemplate) {
+    public LimiterController(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
