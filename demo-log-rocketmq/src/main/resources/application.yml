@@ -3,7 +3,7 @@ spring:
     name: demo-log-rocketmq
 
 rocketmq:
-  namesrvAddr: 172.21.101.3:9876
+  namesrvAddr: localhost:9876
   producer:
     groupName: tradeNoProducerGroup
     instanceName: tradeNoProducer
@@ -18,4 +18,4 @@ rocketmq:
 
 logging:
   level:
-    jdktomcat.demo.log.rocketmq.rabbit.RabbitAdvice: debug
+    jdktomcat.demo.log.rocketmq.rabbit.RabbitAdvice: info
