@@ -63,7 +63,7 @@ public class DemoLogRocketmqApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         // Send string
         SendResult sendResult = rocketMQTemplate.syncSend(springTopic, "Hello, World!");
 
