@@ -1,7 +1,6 @@
 package jdktomcat.log.demo.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,19 +15,18 @@ public class LogDemoRedisApplication implements CommandLineRunner {
         SpringApplication.run(LogDemoRedisApplication.class, args);
     }
 
-    @Qualifier("redisTemplate")
     @Autowired
-    RedisTemplate redis;
+    private RedisTemplate<String,Object> redisTemplate;
 
     @Override
     public void run(String... args) {
-        redis.opsForValue().setIfAbsent("bbb", "ddd");
-        redis.opsForValue().set("aaa", "bbb", Duration.ofMinutes(1));
-        Object ret = redis.opsForValue().get("aaa");
+        redisTemplate.opsForValue().setIfAbsent("bbb", "ddd");
+        redisTemplate.opsForValue().set("aaa", "bbb", Duration.ofMinutes(1));
+        Object ret = redisTemplate.opsForValue().get("aaa");
 
-        redis.delete("bbb");
+        redisTemplate.delete("bbb");
 
-        redis.opsForHash().get("abc", "def");
+        redisTemplate.opsForHash().get("abc", "def");
         //System.out.println("redis操作返回: " + ret);
     }
 }

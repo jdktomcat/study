@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
  * 这个类，是代理RedisTemplate和它返回的OpsForXXX对象，只能获取到执行的Java方法名，具体执行了哪个命令，还需要对Redis代码有了解。
  * 因此不使用，改用另一个对 RedisConnectionFactory 的代理实现类
  */
-//@Configuration
+@Configuration
 public class RedisConfiguration {
     @Bean
     @Primary
@@ -29,7 +29,6 @@ public class RedisConfiguration {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         initSerializer(template);
-
         return getProxy(template, invocation -> {
             String methodName = invocation.getMethod().getName();
             System.out.println("=========" + invocation + "=========");
@@ -70,15 +69,15 @@ public class RedisConfiguration {
     }
 
 
-    private static void initSerializer(RedisTemplate template) {
+    private static void initSerializer(RedisTemplate<String,Object> redisTemplate) {
         // Key用StringRedisSerializer，避免写入Redis的Key和Value，前缀都会出现 \xAC\xED\x00\x05t\x00\x03
-        RedisSerializer keySerializer = new StringRedisSerializer();
-        template.setKeySerializer(keySerializer);
-        template.setHashKeySerializer(keySerializer);
-        RedisSerializer valSerializer = new JsonRedisSerializer<>(Object.class);
+        RedisSerializer<String> keySerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(keySerializer);
+        redisTemplate.setHashKeySerializer(keySerializer);
+        RedisSerializer<Object> valSerializer = new JsonRedisSerializer<>(Object.class);
         // template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        template.setValueSerializer(valSerializer);
-        template.setHashValueSerializer(valSerializer);
+        redisTemplate.setValueSerializer(valSerializer);
+        redisTemplate.setHashValueSerializer(valSerializer);
     }
 
     static class JsonRedisSerializer<T> implements RedisSerializer<T> {
@@ -115,7 +114,5 @@ public class RedisConfiguration {
             }
             return null;
         }
-
     }
-
 }

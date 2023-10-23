@@ -14,4 +14,7 @@ spring:
 
 logging:
   level:
-    beinet.cn.logdemoredis: debug
+    jdktomcat:
+      log:
+        demo:
+          redis: debug
