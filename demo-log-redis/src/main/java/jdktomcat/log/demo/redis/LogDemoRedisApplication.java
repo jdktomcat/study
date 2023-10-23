@@ -1,7 +1,5 @@
 package jdktomcat.log.demo.redis;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

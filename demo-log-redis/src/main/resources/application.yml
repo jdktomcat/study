@@ -17,4 +17,4 @@ logging:
     jdktomcat:
       log:
         demo:
-          redis: debug
+          redis: info
