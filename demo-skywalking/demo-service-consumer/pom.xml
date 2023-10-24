@@ -1,22 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>jdktomcat.demo</groupId>
         <artifactId>demo-skywalking</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
-    <artifactId>demo-service-provider</artifactId>
+    <artifactId>demo-service-consumer</artifactId>
+    <name>demo-service-consumer</name>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <dependencies>
         <!-- 引入公共api模块 -->
         <dependency>
@@ -42,16 +39,17 @@
             <artifactId>curator-recipes</artifactId>
             <version>5.5.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-x-discovery</artifactId>
             <version>5.5.0</version>
         </dependency>
+
+
         <!-- Spring Boot相关依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.skywalking</groupId>
@@ -59,5 +57,4 @@
             <version>8.16.0</version>
         </dependency>
     </dependencies>
-
 </project>
