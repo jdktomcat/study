@@ -3,7 +3,7 @@
   <groupId>jdktomcat.demo</groupId>
   <artifactId>demo-limiter</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Archetype - demo-limiter</name>
+  <name>demo-limiter</name>
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.boot</groupId>
