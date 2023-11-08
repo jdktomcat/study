@@ -20,7 +20,7 @@ public class RocketmqProducer {
     private static final Logger logger = LoggerFactory.getLogger(RocketmqProducer.class);
 
     public static void main(String[] args) throws ClientException {
-        String endpoint = "localhost:8081";
+        String endpoint = "172.31.184.43:10911";
         String topic = "TestTopic";
         ClientServiceProvider provider = ClientServiceProvider.loadService();
         ClientConfigurationBuilder builder = ClientConfiguration.newBuilder().setEndpoints(endpoint);
