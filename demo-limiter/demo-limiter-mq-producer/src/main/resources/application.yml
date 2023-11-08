@@ -1,0 +1,10 @@
+rocketmq:
+  name-server: 172.31.184.43:9876
+  producer:
+    group: timmy-group
+    sendMessageTimeout: 300000
+
+# properties used in the application
+demo:
+  rocketmq:
+    topic: timmy-topic

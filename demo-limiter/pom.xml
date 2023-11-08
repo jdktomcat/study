@@ -12,6 +12,7 @@
   </parent>
   <packaging>pom</packaging>
   <modules>
+    <module>demo-limiter-mq-producer</module>
   </modules>
 
   <properties>
