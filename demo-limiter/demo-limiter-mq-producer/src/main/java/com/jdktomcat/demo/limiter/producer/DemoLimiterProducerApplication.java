@@ -21,8 +21,11 @@ public class DemoLimiterProducerApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         // Send string
-        SendResult sendResult = messageProducerComponent.send("Hello, World!");
-        System.out.printf("syncSend to sendResult=%s %n", sendResult);
+        int i = 0;
+        while (i < 10000) {
+            SendResult sendResult = messageProducerComponent.send("Hello, RocketMQ World! message" + (i++));
+            System.out.printf("syncSend to sendResult=%s %n", sendResult);
+        }
     }
 }
 

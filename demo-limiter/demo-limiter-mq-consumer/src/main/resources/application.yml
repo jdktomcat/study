@@ -14,5 +14,4 @@ rocketmq:
 demo:
   rocketmq:
     topic: timmy-topic
-    tag: timmy-tag
     tlsEnable: false

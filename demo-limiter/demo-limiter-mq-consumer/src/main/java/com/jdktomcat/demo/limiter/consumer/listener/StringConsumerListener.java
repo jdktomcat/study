@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-@RocketMQMessageListener(topic = "${demo.rocketmq.topic}", consumerGroup = "timmy_consumer", selectorExpression = "${demo.rocketmq.tag}", tlsEnable = "${demo.rocketmq.tlsEnable}")
+@RocketMQMessageListener(topic = "${demo.rocketmq.topic}", consumerGroup = "timmy_consumer", tlsEnable = "${demo.rocketmq.tlsEnable}")
 public class StringConsumerListener implements RocketMQListener<String> {
     @Override
     public void onMessage(String s) {
-
+        System.out.println("消费消息：" + s);
     }
 }
