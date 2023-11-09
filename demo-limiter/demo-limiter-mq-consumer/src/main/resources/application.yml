@@ -1,3 +1,6 @@
+server:
+  port: 0
+
 spring:
   application:
     name: demo-limiter-mq-consumer
@@ -27,11 +30,9 @@ rocketmq:
   pull-consumer:
     group: timmy-consumer-group
     topic: timmy-topic
-
   # properties used in application code
 demo:
   rocketmq:
     topic: timmy-topic
     tlsEnable: false
-server:
-  port: 0
+
