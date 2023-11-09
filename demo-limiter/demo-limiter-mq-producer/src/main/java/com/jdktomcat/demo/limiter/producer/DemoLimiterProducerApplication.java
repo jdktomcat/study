@@ -1,12 +1,14 @@
 package com.jdktomcat.demo.limiter.producer;
 
 import com.jdktomcat.demo.limiter.producer.component.MessageProducerComponent;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@Slf4j
 @SpringBootApplication
 public class DemoLimiterProducerApplication implements CommandLineRunner {
 
@@ -24,7 +26,7 @@ public class DemoLimiterProducerApplication implements CommandLineRunner {
         int i = 0;
         while (i < 10000) {
             SendResult sendResult = messageProducerComponent.send("Hello, RocketMQ World! message" + (i++));
-            System.out.printf("syncSend to sendResult=%s %n", sendResult);
+            log.info("syncSend to sendResult:{}", sendResult);
         }
     }
 }
