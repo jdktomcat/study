@@ -30,9 +30,9 @@ public class StringConsumerListener implements RocketMQListener<String> {
     private BlockingQueue<String> queue = new LinkedBlockingQueue<>();
     private ScheduledExecutorService consumerExecutor = new ScheduledThreadPoolExecutor(1);
 
-    private static final String CHAT_ID = "";
+    private static final String CHAT_ID = "6697826662";
 
-    private static final String URL = "https://api.telegram.org/bot910445509:AAH4Wbt6__Mrwjyj69vT1Hmi3CQ5yIdkAY0/sendMessage";
+    private static final String URL = "https://api.telegram.org/bot6347956777:AAFzJ2YtxunXH_ohDJdPvkGDoXk8ncoCO_4/sendMessage";
 
     private static final String LOCK_PREFIX = "telegram_send_lock";
 
@@ -41,6 +41,7 @@ public class StringConsumerListener implements RocketMQListener<String> {
     @Autowired
     private RedisComponent redisComponent;
 
+    @Autowired
     private HttpComponent httpComponent;
 
     static {

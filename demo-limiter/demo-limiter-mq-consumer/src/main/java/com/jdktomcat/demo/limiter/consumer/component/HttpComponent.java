@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -20,7 +21,7 @@ import java.util.Map;
 @Component
 public class HttpComponent {
 
-    @Autowired
+    @Resource
     private RestTemplate restTemplate;
 
 
