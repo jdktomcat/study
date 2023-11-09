@@ -11,12 +11,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author ZF-Timmy
  * @version V1.0
- * @description 类描述：
+ * @description 类描述：redis组件
  * @date 2023/11/8
  */
 @Slf4j
 @Component
 public class RedisComponent {
+
     @Autowired
     private RedissonClient redissonClient;
 

@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @author ZF-Timmy
  * @version V1.0
- * @description 类描述：
+ * @description 类描述：rest配置类
  * @date 2023/11/9
  */
 @Configuration

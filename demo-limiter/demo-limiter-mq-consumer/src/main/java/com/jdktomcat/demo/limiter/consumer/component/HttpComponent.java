@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author ZF-Timmy
  * @version V1.0
- * @description 类描述：
+ * @description 类描述：http请求组件
  * @date 2023/11/8
  */
 @Slf4j
