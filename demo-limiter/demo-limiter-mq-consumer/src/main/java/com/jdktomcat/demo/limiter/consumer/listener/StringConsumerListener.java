@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -84,7 +83,6 @@ public class StringConsumerListener implements RocketMQListener<String> {
 
     @Override
     public void onMessage(String s) {
-        System.out.println("消费消息：" + s);
         try {
             queue.put(s);
         } catch (InterruptedException e) {
