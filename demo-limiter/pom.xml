@@ -14,6 +14,7 @@
   <modules>
     <module>demo-limiter-mq-producer</module>
     <module>demo-limiter-mq-consumer</module>
+      <module>demo-limiter-redis-fixed-window</module>
   </modules>
 
   <properties>
