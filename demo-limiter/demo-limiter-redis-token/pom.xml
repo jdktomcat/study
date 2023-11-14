@@ -7,10 +7,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.jdktomcat.demo.limiter.redis.fixed.window</groupId>
-    <artifactId>demo-limiter-redis-fixed-window</artifactId>
+    <groupId>com.jdktomcat.demo.limiter.redis.token</groupId>
+    <artifactId>demo-limiter-redis-token</artifactId>
     <packaging>jar</packaging>
-    <name>demo-limiter-redis-fixed-window</name>
+    <name>demo-limiter-redis-token</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

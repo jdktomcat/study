@@ -1,4 +1,4 @@
-package com.jdktomcat.demo.limiter.redis.fixed.window.component;
+package com.jdktomcat.demo.limiter.redis.token.component;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,6 @@ public class RedisComponent {
 
     @Autowired
     private StringRedisTemplate redisStringTemplate;
-
 
     /**
      * 基于固定窗口算法实现限流
