@@ -4,8 +4,6 @@ import com.jdktomcat.demo.limiter.redis.fixed.window.annotation.Limiter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author ZF-Timmy
  * @version V1.0
@@ -15,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 public class TestController {
 
-    @Limiter(value = 10, unit = TimeUnit.MINUTES, window = 1)
+    @Limiter()
     @GetMapping("/limiter")
     public String say(String name) {
         return "hello" + name;

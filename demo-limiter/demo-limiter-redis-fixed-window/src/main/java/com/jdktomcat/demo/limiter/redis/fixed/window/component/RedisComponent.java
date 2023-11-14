@@ -51,7 +51,7 @@ public class RedisComponent {
         long currentTime = new Date().getTime();
         if(Boolean.TRUE.equals(redisStringTemplate.hasKey(eigenvalue))) {
             int count = Objects.requireNonNull(redisStringTemplate.opsForZSet().rangeByScore(eigenvalue, currentTime - window * 1000L, currentTime)).size();
-            if (count > flowLimit) {
+            if (count >= flowLimit) {
                 log.warn("特征值：{} 已经超过访问频次：{} 时间区间：{}", eigenvalue, flowLimit, window);
                 return false;
             }
