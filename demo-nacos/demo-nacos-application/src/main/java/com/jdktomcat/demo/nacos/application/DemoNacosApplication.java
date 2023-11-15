@@ -1,13 +1,24 @@
 package com.jdktomcat.demo.nacos.application;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 /**
  * Hello world!
  *
  */
-public class DemoNacosApplication
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+
+
+@Slf4j
+@SpringBootApplication
+public class DemoNacosApplication implements CommandLineRunner {
+    public static void main( String[] args ) {
+        
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+
     }
 }
