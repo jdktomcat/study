@@ -16,6 +16,6 @@ public class TestController {
     @Limiter()
     @GetMapping("/limiter")
     public String say(String name) {
-        return "hello" + name;
+        return "hello " + name;
     }
 }
