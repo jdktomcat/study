@@ -30,7 +30,7 @@ public class DemoDelayMessageProducerApplication implements CommandLineRunner {
     public void run(String... args) {
         // Send string
         int i = 0;
-        long delay = 10;
+        long delay = 20;
         while (i < 100000) {
             boolean result = redisComponent.setIfAbsent("delay_message_key_"+i,"delay_message_value_"+i,delay, TimeUnit.SECONDS);
             log.info("setIfAbsent result:{}", result);
