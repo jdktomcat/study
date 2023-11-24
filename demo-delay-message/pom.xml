@@ -13,7 +13,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>demo-delay-message-producer</module>
-        <module>demo-delay-message-consumer</module>
+        <module>demo-delay-message-redis-consumer</module>
+        <module>demo-delay-message-mq-consumer</module>
     </modules>
 
     <properties>
