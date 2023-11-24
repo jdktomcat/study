@@ -9,7 +9,7 @@
     <groupId>com.jdktomcat.demo.limiter.consumer</groupId>
     <artifactId>demo-delay-message-redis-consumer</artifactId>
     <packaging>jar</packaging>
-    <name>demo-delay-message-consumer</name>
+    <name>demo-delay-message-redis-consumer</name>
 
     <dependencies>
 
