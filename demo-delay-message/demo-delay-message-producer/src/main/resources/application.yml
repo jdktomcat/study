@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: demo-limiter-mq-producer
+  redis:
+    host: 192.168.56.1
+    port: 6379
+    timeout: 2000 # 连接或读取超时时长（毫秒）
+    database: 0
+rocketmq:
+  name-server: 172.31.184.43:9876
+  producer:
+    group: timmy-group
+    sendMessageTimeout: 300000
+
+# properties used in the application
+demo:
+  rocketmq:
+    topic: timmy-topic
