@@ -16,9 +16,12 @@ rocketmq:
   name-server: 172.31.184.43:9876
   producer:
     group: timmy-group
-    sendMessageTimeout: 300000
+    instance: delayProducer
+    max-message-size: 131072
+    send-message-timeout: 10000
 
 # properties used in the application
 demo:
   rocketmq:
     topic: timmy-topic
+    tag: delay

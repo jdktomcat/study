@@ -22,5 +22,6 @@ rocketmq:
 demo:
   rocketmq:
     topic: timmy-topic
+    tag: delay
     tlsEnable: false
 
