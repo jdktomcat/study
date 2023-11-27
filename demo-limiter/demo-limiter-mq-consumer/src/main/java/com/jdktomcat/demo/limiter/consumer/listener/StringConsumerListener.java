@@ -97,8 +97,8 @@ public class StringConsumerListener implements RocketMQListener<String> {
     public void onMessage(String message) {
         AlertMessage alertMessage = JSONObject.parseObject(message, AlertMessage.class);
         if (alertMessage != null && !StringUtils.isEmpty(alertMessage.getBot()) && !StringUtils.isEmpty(alertMessage.getChat())) {
-            boolean addBotResult = redisComponent.addSetMember(BOT_SET_KEY, alertMessage.getBot());
-            boolean addBotChatResult = redisComponent.addSetMember(String.format(BOT_CHAT_SET, alertMessage.getBot()), alertMessage.getChat());
+            Long addBotResult = redisComponent.addSetMember(BOT_SET_KEY, alertMessage.getBot());
+            Long addBotChatResult = redisComponent.addSetMember(String.format(BOT_CHAT_SET, alertMessage.getBot()), alertMessage.getChat());
             Long pushResult = redisComponent.add(String.format(BOT_CHAT_MESSAGE_LIST, alertMessage.getBot(), alertMessage.getChat()), alertMessage.getMessage());
             log.info("addBotResult:{} addBotChatResult:{} addBotChatMessage:{}", addBotResult, addBotChatResult, pushResult);
         }

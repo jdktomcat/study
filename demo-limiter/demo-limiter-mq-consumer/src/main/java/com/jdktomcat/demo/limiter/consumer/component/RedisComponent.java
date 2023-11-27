@@ -46,8 +46,8 @@ public class RedisComponent {
      * @param member 元素
      * @return 成功与否
      */
-    public boolean addSetMember(String keySet, String member){
-        return redissonClient.getSet(keySet).add(member);
+    public Long addSetMember(String keySet, String member){
+        return redisStringTemplate.opsForSet().add(keySet,member);
     }
 
     public Set<String> getSetMember(String keySet){
