@@ -13,9 +13,12 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author ZF-Timmy
@@ -59,25 +62,27 @@ public class StringConsumerListener implements RocketMQListener<String> {
     public synchronized void consumerTelegramMsg() {
         consumerExecutor.scheduleAtFixedRate(() -> {
             Set<String> botSet = redisComponent.getSetMember(BOT_SET_KEY);
+            log.info("bot set:{}", Arrays.toString(botSet.toArray()));
             for (String bot : botSet) {
                 if (!redisComponent.tryLockWithLeaseTime(String.format(BOT_LOCK, bot), 30)) {
                     continue;
                 }
                 Set<String> botChatSet = redisComponent.getSetMember(String.format(BOT_CHAT_SET, bot));
+                log.info("bot:{} chat set:{}", bot, Arrays.toString(botChatSet.toArray()));
                 for (String chat : botChatSet) {
-                    if(!redisComponent.limitFlowFixedWindow(String.format(BOT_CHAT_EIGENVALUE,bot,chat),20,60)){
+                    if (!redisComponent.limitFlowFixedWindow(String.format(BOT_CHAT_EIGENVALUE, bot, chat), 20, 60)) {
                         continue;
                     }
-                    String message = redisComponent.pop(String.format(BOT_CHAT_MESSAGE_LIST,bot,chat));
-                    if(StringUtils.isEmpty(message)){
+                    String message = redisComponent.pop(String.format(BOT_CHAT_MESSAGE_LIST, bot, chat));
+                    if (StringUtils.isEmpty(message)) {
                         continue;
                     }
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("chat_id", chat);
                     jsonObject.put("parse_mode", "HTML");
                     jsonObject.put("text", message);
-                    String ret = httpComponent.postForJson(URL+bot+API, new HashMap<>(), jsonObject.toJSONString());
-                    log.info("telegram send msg success! url:{} data:{} result:{}", URL, jsonObject.toJSONString(), ret);
+                    String result = httpComponent.postForJson(URL + bot + API, new HashMap<>(), jsonObject.toJSONString());
+                    log.info("telegram send msg success! url:{} data:{} result:{}", URL + bot + API, jsonObject.toJSONString(), result);
                 }
             }
         }, 0, 30, TimeUnit.MILLISECONDS);
