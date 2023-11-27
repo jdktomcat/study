@@ -1,12 +1,16 @@
 package com.jdktomcat.demo.limiter.producer;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jdktomcat.demo.limiter.producer.component.MessageProducerComponent;
+import com.jdktomcat.demo.limiter.producer.message.AlertMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.Random;
 
 @Slf4j
 @SpringBootApplication
@@ -20,12 +24,28 @@ public class DemoLimiterProducerApplication implements CommandLineRunner {
         SpringApplication.run(DemoLimiterProducerApplication.class, args);
     }
 
+    /**
+     * 模拟机器人
+     */
+    private static final String[] BOTS = {"6774799455:AAFeHKrLxxMRVpBLg8LFj7N62drOxz7b25g", "6347956777:AAGkrZ2ii7AuiKNiO1LflAGy8owYjTg3oWk", "6860056824:AAHoBVhelMHs6KXRHey2ARiKegaYlfiKpwk"};
+
+    /**
+     * 模拟群组
+     */
+    private static final String[] CHATS = {"-4066493039", "-4011937214", "-4089912063"};
+
+
     @Override
     public void run(String... args) {
         // Send string
         int i = 0;
+        Random random = new Random(3);
         while (i < 10000) {
-            SendResult sendResult = messageProducerComponent.send("Hello, RocketMQ World! message" + (i++));
+            AlertMessage alertMessage = new AlertMessage();
+            alertMessage.setBot(BOTS[random.nextInt()]);
+            alertMessage.setChat(CHATS[random.nextInt()]);
+            alertMessage.setMessage("alert message " + (i++));
+            SendResult sendResult = messageProducerComponent.send(JSONObject.toJSONString(alertMessage));
             log.info("syncSend to sendResult:{}", sendResult);
         }
     }

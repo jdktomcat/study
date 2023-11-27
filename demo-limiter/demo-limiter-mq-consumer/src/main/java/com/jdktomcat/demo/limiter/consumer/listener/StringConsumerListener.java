@@ -3,15 +3,18 @@ package com.jdktomcat.demo.limiter.consumer.listener;
 import com.alibaba.fastjson.JSONObject;
 import com.jdktomcat.demo.limiter.consumer.component.HttpComponent;
 import com.jdktomcat.demo.limiter.consumer.component.RedisComponent;
+import com.jdktomcat.demo.limiter.consumer.message.AlertMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.concurrent.*;
 
 /**
@@ -25,15 +28,13 @@ import java.util.concurrent.*;
 @RocketMQMessageListener(topic = "${demo.rocketmq.topic}", consumerGroup = "timmy_consumer", tlsEnable = "${demo.rocketmq.tlsEnable}")
 public class StringConsumerListener implements RocketMQListener<String> {
 
-    private final BlockingQueue<String> queue = new LinkedBlockingQueue<>();
-
     private final ScheduledExecutorService consumerExecutor = new ScheduledThreadPoolExecutor(1);
 
-    private static final String CHAT_ID = "6697826662";
 
-    private static final String URL = "https://api.telegram.org/bot6347956777:AAFzJ2YtxunXH_ohDJdPvkGDoXk8ncoCO_4/sendMessage";
+    private static final String URL = "https://api.telegram.org/bot";
 
-    private static final String LOCK_PREFIX = "telegram_send_lock";
+    private static final String API = "/sendMessage";
+
 
     @Autowired
     private RedisComponent redisComponent;
@@ -41,32 +42,45 @@ public class StringConsumerListener implements RocketMQListener<String> {
     @Autowired
     private HttpComponent httpComponent;
 
+    private static final String BOT_SET_KEY = "telegram:bot:set";
+
+    private static final String BOT_CHAT_SET = "telegram:bot:%s:chat:set";
+
+    private static final String BOT_CHAT_MESSAGE_LIST = "telegram:bot:%s:chat:%s:list";
+
+    private static final String BOT_CHAT_EIGENVALUE = "telegram:bot:%s:chat:%s:limit";
+
+    private static final String BOT_LOCK = "telegram:send:lock:%s";
 
     /**
      * 消费电报消息
-     * 电报地址： https://api.telegram.org/bot910445509:AAH4Wbt6__Mrwjyj69vT1Hmi3CQ5yIdkAY0/sendMessage
      */
     @PostConstruct
     public synchronized void consumerTelegramMsg() {
         consumerExecutor.scheduleAtFixedRate(() -> {
-            if (queue.isEmpty()) {
-                return;
-            }
-            boolean flag = redisComponent.tryLockWithLeaseTime(LOCK_PREFIX, 3);
-            if (flag) {
-                try {
-                    String msg = queue.take();
+            Set<String> botSet = redisComponent.getSetMember(BOT_SET_KEY);
+            for (String bot : botSet) {
+                if (!redisComponent.tryLockWithLeaseTime(String.format(BOT_LOCK, bot), 30)) {
+                    continue;
+                }
+                Set<String> botChatSet = redisComponent.getSetMember(String.format(BOT_CHAT_SET, bot));
+                for (String chat : botChatSet) {
+                    if(!redisComponent.limitFlowFixedWindow(String.format(BOT_CHAT_EIGENVALUE,bot,chat),20,60)){
+                        continue;
+                    }
+                    String message = redisComponent.pop(String.format(BOT_CHAT_MESSAGE_LIST,bot,chat));
+                    if(StringUtils.isEmpty(message)){
+                        continue;
+                    }
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("chat_id", CHAT_ID);
+                    jsonObject.put("chat_id", chat);
                     jsonObject.put("parse_mode", "HTML");
-                    jsonObject.put("text", msg);
-                    String ret = httpComponent.postForJson(URL, new HashMap<>(), jsonObject.toJSONString());
+                    jsonObject.put("text", message);
+                    String ret = httpComponent.postForJson(URL+bot+API, new HashMap<>(), jsonObject.toJSONString());
                     log.info("telegram send msg success! url:{} data:{} result:{}", URL, jsonObject.toJSONString(), ret);
-                } catch (Exception e) {
-                    log.error("发送告警信息发生异常！", e);
                 }
             }
-        }, 0, 3, TimeUnit.SECONDS);
+        }, 0, 30, TimeUnit.MILLISECONDS);
     }
 
     @PreDestroy
@@ -76,10 +90,12 @@ public class StringConsumerListener implements RocketMQListener<String> {
 
     @Override
     public void onMessage(String message) {
-        try {
-            queue.put(message);
-        } catch (InterruptedException e) {
-            log.error("消费消息发生异常！", e);
+        AlertMessage alertMessage = JSONObject.parseObject(message, AlertMessage.class);
+        if (alertMessage != null && !StringUtils.isEmpty(alertMessage.getBot()) && !StringUtils.isEmpty(alertMessage.getChat())) {
+            boolean addBotResult = redisComponent.addSetMember(BOT_SET_KEY, alertMessage.getBot());
+            boolean addBotChatResult = redisComponent.addSetMember(String.format(BOT_CHAT_SET, alertMessage.getBot()), alertMessage.getChat());
+            boolean addBotChatMessage = redisComponent.add(String.format(BOT_CHAT_MESSAGE_LIST, alertMessage.getBot(), alertMessage.getChat()), alertMessage.getMessage());
+            log.info("addBotResult:{} addBotChatResult:{} addBotChatMessage:{}", addBotResult, addBotChatResult, addBotChatMessage);
         }
     }
 }
