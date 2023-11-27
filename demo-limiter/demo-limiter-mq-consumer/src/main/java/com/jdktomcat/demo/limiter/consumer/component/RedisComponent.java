@@ -51,11 +51,11 @@ public class RedisComponent {
     }
 
     public Set<String> getSetMember(String keySet){
-        return redissonClient.getSet(keySet);
+        return redisStringTemplate.opsForSet().members(keySet);
     }
 
-    public boolean add(String keyList,String element){
-        return redissonClient.getList(keyList).add(element);
+    public Long add(String keyList,String element){
+        return redisStringTemplate.opsForList().rightPush(keyList, element);
     }
 
     public String pop(String keyList){
