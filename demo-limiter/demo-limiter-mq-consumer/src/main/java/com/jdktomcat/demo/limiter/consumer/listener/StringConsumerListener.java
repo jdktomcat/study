@@ -60,15 +60,12 @@ public class StringConsumerListener implements RocketMQListener<String> {
 
         private String bot;
 
-        private String chat;
-
         private RedisComponent redisComponent;
 
         private HttpComponent httpComponent;
 
-        public SendTask(String bot, String chat, RedisComponent redisComponent, HttpComponent httpComponent) {
+        public SendTask(String bot, RedisComponent redisComponent, HttpComponent httpComponent) {
             this.bot = bot;
-            this.chat = chat;
             this.redisComponent = redisComponent;
             this.httpComponent = httpComponent;
         }
@@ -86,22 +83,28 @@ public class StringConsumerListener implements RocketMQListener<String> {
          */
         @Override
         public void run() {
-            if (redisComponent.listLength(String.format(BOT_CHAT_MESSAGE_LIST, bot, chat)) == 0L) {
+            if (!redisComponent.getLock(String.format(BOT_LOCK, bot))) {
                 return;
             }
-            if (!redisComponent.limitFlowFixedWindow(String.format(BOT_CHAT_EIGENVALUE, bot, chat), 20, 60)) {
-                return;
+            Set<String> botChatSet = redisComponent.getSetMember(String.format(BOT_CHAT_SET, bot));
+            for (String chat : botChatSet) {
+                if (redisComponent.listLength(String.format(BOT_CHAT_MESSAGE_LIST, bot, chat)) == 0L) {
+                    continue;
+                }
+                if (!redisComponent.limitFlowFixedWindow(String.format(BOT_CHAT_EIGENVALUE, bot, chat), 20, 60)) {
+                    continue;
+                }
+                String message = redisComponent.pop(String.format(BOT_CHAT_MESSAGE_LIST, bot, chat));
+                if (StringUtils.isEmpty(message)) {
+                    continue;
+                }
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("chat_id", chat);
+                jsonObject.put("parse_mode", "HTML");
+                jsonObject.put("text", message);
+                String result = httpComponent.postForJson(URL + bot + API, new HashMap<>(), jsonObject.toJSONString());
+                log.info("telegram send msg success! url:{} data:{} result:{}", URL + bot + API, jsonObject.toJSONString(), result);
             }
-            String message = redisComponent.pop(String.format(BOT_CHAT_MESSAGE_LIST, bot, chat));
-            if (StringUtils.isEmpty(message)) {
-                return;
-            }
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("chat_id", chat);
-            jsonObject.put("parse_mode", "HTML");
-            jsonObject.put("text", message);
-            String result = httpComponent.postForJson(URL + bot + API, new HashMap<>(), jsonObject.toJSONString());
-            log.info("telegram send msg success! url:{} data:{} result:{}", URL + bot + API, jsonObject.toJSONString(), result);
         }
     }
 
@@ -113,13 +116,7 @@ public class StringConsumerListener implements RocketMQListener<String> {
         consumerExecutor.scheduleAtFixedRate(() -> {
             Set<String> botSet = redisComponent.getSetMember(BOT_SET_KEY);
             for (String bot : botSet) {
-                if (!redisComponent.tryLockWithLeaseTime(String.format(BOT_LOCK, bot), 30)) {
-                    continue;
-                }
-                Set<String> botChatSet = redisComponent.getSetMember(String.format(BOT_CHAT_SET, bot));
-                for (String chat : botChatSet) {
-                    taskPoolExecutor.execute(new SendTask(bot, chat, redisComponent, httpComponent));
-                }
+                taskPoolExecutor.execute(new SendTask(bot, redisComponent, httpComponent));
             }
         }, 0, 30, TimeUnit.MILLISECONDS);
     }
