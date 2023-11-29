@@ -40,7 +40,7 @@ public class DemoLimiterProducerApplication implements CommandLineRunner {
         // Send string
         int i = 0;
         Random random = new Random();
-        while (i < 100) {
+        while (i < 1000) {
             AlertMessage alertMessage = new AlertMessage();
             String bot = BOTS[random.nextInt(3)];
             alertMessage.setBot(bot);
