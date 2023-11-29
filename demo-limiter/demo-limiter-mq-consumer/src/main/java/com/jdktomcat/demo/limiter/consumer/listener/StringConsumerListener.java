@@ -55,6 +55,8 @@ public class StringConsumerListener implements RocketMQListener<String> {
 
     private static final String BOT_LOCK = "telegram:send:lock:%s";
 
+    private static final String BOT_CHAT_LOCK = "telegram:consume:lock:%s:%s";
+
     /**
      * 消费电报消息
      */
@@ -62,13 +64,11 @@ public class StringConsumerListener implements RocketMQListener<String> {
     public synchronized void consumerTelegramMsg() {
         consumerExecutor.scheduleAtFixedRate(() -> {
             Set<String> botSet = redisComponent.getSetMember(BOT_SET_KEY);
-            log.info("bot set:{}", Arrays.toString(botSet.toArray()));
             for (String bot : botSet) {
                 if (!redisComponent.tryLockWithLeaseTime(String.format(BOT_LOCK, bot), 30)) {
                     continue;
                 }
                 Set<String> botChatSet = redisComponent.getSetMember(String.format(BOT_CHAT_SET, bot));
-                log.info("bot:{} chat set:{}", bot, Arrays.toString(botChatSet.toArray()));
                 for (String chat : botChatSet) {
                     if (redisComponent.listLength(String.format(BOT_CHAT_MESSAGE_LIST, bot, chat)) == 0L) {
                         continue;
@@ -100,10 +100,22 @@ public class StringConsumerListener implements RocketMQListener<String> {
     public void onMessage(String message) {
         AlertMessage alertMessage = JSONObject.parseObject(message, AlertMessage.class);
         if (alertMessage != null && !StringUtils.isEmpty(alertMessage.getBot()) && !StringUtils.isEmpty(alertMessage.getChat())) {
-            Long addBotResult = redisComponent.addSetMember(BOT_SET_KEY, alertMessage.getBot());
-            Long addBotChatResult = redisComponent.addSetMember(String.format(BOT_CHAT_SET, alertMessage.getBot()), alertMessage.getChat());
-            Long pushResult = redisComponent.add(String.format(BOT_CHAT_MESSAGE_LIST, alertMessage.getBot(), alertMessage.getChat()), alertMessage.getMessage());
-            log.info("addBotResult:{} addBotChatResult:{} addBotChatMessage:{}", addBotResult, addBotChatResult, pushResult);
+            String lockKey = String.format(BOT_CHAT_LOCK, alertMessage.getBot(), alertMessage.getChat());
+            while(!redisComponent.getLock(lockKey)){
+                try{
+                    TimeUnit.MILLISECONDS.sleep(300L);
+                }catch (Exception exception){
+                    log.warn("线程休眠异常！", exception);
+                }
+            }
+            try {
+                Long addBotResult = redisComponent.addSetMember(BOT_SET_KEY, alertMessage.getBot());
+                Long addBotChatResult = redisComponent.addSetMember(String.format(BOT_CHAT_SET, alertMessage.getBot()), alertMessage.getChat());
+                Long pushResult = redisComponent.add(String.format(BOT_CHAT_MESSAGE_LIST, alertMessage.getBot(), alertMessage.getChat()), alertMessage.getMessage());
+                log.info("addBotResult:{} addBotChatResult:{} addBotChatMessage:{}", addBotResult, addBotChatResult, pushResult);
+            } finally {
+                redisComponent.release(lockKey);
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ public class DemoLimiterProducerApplication implements CommandLineRunner {
     /**
      * 模拟群组
      */
-    private static final String[] CHATS = {"-1002109475651", "-1002137090010", "-1002119084474"};
+    private static final String[] CHATS = {"-4043624377", "-4086688530", "-4095197160"};
 
 
     @Override

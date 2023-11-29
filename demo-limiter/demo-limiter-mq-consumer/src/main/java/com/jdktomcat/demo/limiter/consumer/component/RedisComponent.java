@@ -39,6 +39,14 @@ public class RedisComponent {
         }
     }
 
+    public boolean getLock(String lockKey){
+        return Boolean.TRUE.equals(redisStringTemplate.opsForValue().setIfAbsent(lockKey, "1", 2L, TimeUnit.SECONDS));
+    }
+
+    public boolean release(String lockKey){
+        return Boolean.TRUE.equals(redisStringTemplate.delete(lockKey));
+    }
+
     /**
      * 添加集合元素
      *
