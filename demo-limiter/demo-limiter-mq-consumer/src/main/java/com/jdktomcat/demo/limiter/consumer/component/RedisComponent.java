@@ -2,7 +2,6 @@ package com.jdktomcat.demo.limiter.consumer.component;
 
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
-import org.redisson.api.RSet;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -43,8 +42,8 @@ public class RedisComponent {
         return Boolean.TRUE.equals(redisStringTemplate.opsForValue().setIfAbsent(lockKey, "1", 2L, TimeUnit.SECONDS));
     }
 
-    public boolean release(String lockKey){
-        return Boolean.TRUE.equals(redisStringTemplate.delete(lockKey));
+    public void release(String lockKey){
+        redisStringTemplate.delete(lockKey);
     }
 
     /**
