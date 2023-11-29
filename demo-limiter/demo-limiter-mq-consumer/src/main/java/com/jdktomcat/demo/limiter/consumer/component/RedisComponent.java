@@ -91,10 +91,7 @@ public class RedisComponent {
                 return false;
             }
         }
-        boolean addResult = Boolean.TRUE.equals(redisStringTemplate.opsForZSet().add(eigenvalue, UUID.randomUUID().toString(), currentTime));
-        log.info("添加流控，特征值：{} 分数：{} 结果：{} ",eigenvalue,currentTime,addResult);
-        Long removeResult = redisStringTemplate.opsForZSet().removeRangeByScore(eigenvalue, -1,currentTime - window * 1000L);
-        log.info("裁剪流控，特征值：{} 分数上限：{} 裁剪结果：{} ", eigenvalue, currentTime - window, removeResult);
-        return true;
+        redisStringTemplate.opsForZSet().removeRangeByScore(eigenvalue, -1,currentTime - window * 1000L);
+        return Boolean.TRUE.equals(redisStringTemplate.opsForZSet().add(eigenvalue, UUID.randomUUID().toString(), currentTime));
     }
 }
