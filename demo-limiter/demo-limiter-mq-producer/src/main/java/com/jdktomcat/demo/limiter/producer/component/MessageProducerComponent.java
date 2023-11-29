@@ -28,8 +28,7 @@ public class MessageProducerComponent {
      * @param message 消息
      * @return 发送结果
      */
-    public SendResult send(String message) {
-        return rocketMQTemplate.syncSend(topic, message);
+    public SendResult send(String message, String hashKey) {
+        return rocketMQTemplate.syncSendOrderly(topic, message, hashKey);
     }
-
 }

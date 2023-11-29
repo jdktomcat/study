@@ -62,6 +62,10 @@ public class RedisComponent {
         return redisStringTemplate.opsForList().leftPop(keyList);
     }
 
+    public Long listLength(String keyList){
+        return redisStringTemplate.opsForList().size(keyList);
+    }
+
     /**
      * 基于固定窗口算法实现限流
      *

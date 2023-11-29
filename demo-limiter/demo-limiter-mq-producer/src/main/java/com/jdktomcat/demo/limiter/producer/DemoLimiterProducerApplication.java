@@ -42,10 +42,12 @@ public class DemoLimiterProducerApplication implements CommandLineRunner {
         Random random = new Random();
         while (i < 100) {
             AlertMessage alertMessage = new AlertMessage();
-            alertMessage.setBot(BOTS[random.nextInt(3)]);
-            alertMessage.setChat(CHATS[random.nextInt(3)]);
+            String bot = BOTS[random.nextInt(3)];
+            alertMessage.setBot(bot);
+            String chat = CHATS[random.nextInt(3)];
+            alertMessage.setChat(chat);
             alertMessage.setMessage("alert message " + (i++));
-            SendResult sendResult = messageProducerComponent.send(JSONObject.toJSONString(alertMessage));
+            SendResult sendResult = messageProducerComponent.send(JSONObject.toJSONString(alertMessage), bot+chat);
             log.info("syncSend to sendResult:{}", sendResult);
         }
     }

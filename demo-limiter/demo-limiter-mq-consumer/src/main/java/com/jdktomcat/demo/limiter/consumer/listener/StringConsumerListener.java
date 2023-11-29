@@ -70,6 +70,9 @@ public class StringConsumerListener implements RocketMQListener<String> {
                 Set<String> botChatSet = redisComponent.getSetMember(String.format(BOT_CHAT_SET, bot));
                 log.info("bot:{} chat set:{}", bot, Arrays.toString(botChatSet.toArray()));
                 for (String chat : botChatSet) {
+                    if (redisComponent.listLength(String.format(BOT_CHAT_MESSAGE_LIST, bot, chat)) == 0L) {
+                        continue;
+                    }
                     if (!redisComponent.limitFlowFixedWindow(String.format(BOT_CHAT_EIGENVALUE, bot, chat), 20, 60)) {
                         continue;
                     }
