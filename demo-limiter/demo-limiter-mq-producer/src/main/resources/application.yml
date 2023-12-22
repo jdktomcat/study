@@ -3,7 +3,7 @@ spring:
     name: demo-limiter-mq-producer
 
 rocketmq:
-  name-server: 172.31.184.43:9876
+  name-server: 172.31.184.45:9876
   producer:
     group: timmy-group
     sendMessageTimeout: 300000
@@ -11,4 +11,4 @@ rocketmq:
 # properties used in the application
 demo:
   rocketmq:
-    topic: timmy-topic
+    topic: telegram_send_topic:telegram_send_nomal_tag

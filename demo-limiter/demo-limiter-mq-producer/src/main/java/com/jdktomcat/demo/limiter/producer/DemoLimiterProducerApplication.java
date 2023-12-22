@@ -46,7 +46,7 @@ public class DemoLimiterProducerApplication implements CommandLineRunner {
             alertMessage.setBot(bot);
             String chat = CHATS[random.nextInt(3)];
             alertMessage.setChat(chat);
-            alertMessage.setMessage("timmy alert message " + (i++));
+            alertMessage.setMessage("timmy telegram alert message " + (i++));
             SendResult sendResult = messageProducerComponent.send(JSONObject.toJSONString(alertMessage), bot+chat);
             log.info("syncSend to sendResult:{}", sendResult);
         }
