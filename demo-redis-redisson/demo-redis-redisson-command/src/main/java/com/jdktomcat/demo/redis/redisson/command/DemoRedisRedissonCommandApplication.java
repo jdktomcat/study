@@ -3,6 +3,7 @@ package com.jdktomcat.demo.redis.redisson.command;
 import com.jdktomcat.demo.redis.redisson.command.component.RedisComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -16,6 +17,10 @@ public class DemoRedisRedissonCommandApplication implements CommandLineRunner {
 
     @Autowired
     private RedisComponent redisComponent;
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoRedisRedissonCommandApplication.class, args);
+    }
 
     /**
      * Callback used to run the bean.
