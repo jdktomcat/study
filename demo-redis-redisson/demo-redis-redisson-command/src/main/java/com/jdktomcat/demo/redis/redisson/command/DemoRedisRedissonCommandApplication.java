@@ -29,7 +29,16 @@ public class DemoRedisRedissonCommandApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        Object object = redisComponent.zPopMin("zadd-1");
-        System.out.printf(object.toString());
+        String key = "myzset";
+        redisComponent.del(key);
+        System.out.println("删除键：" + key);
+        for (int i = 0; i < 100; i++) {
+            boolean add = redisComponent.zadd(key, "field" + i, i);
+            System.out.println("元素" + i + " 添加结果：" + add);
+        }
+        for (int i = 0; i < 100; i++) {
+            Object object = redisComponent.zPopMin("myzset");
+            System.out.println(object.toString());
+        }
     }
 }

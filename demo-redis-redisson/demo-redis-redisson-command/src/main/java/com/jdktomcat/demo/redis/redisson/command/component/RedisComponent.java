@@ -19,13 +19,15 @@ public class RedisComponent {
     @Autowired
     private RedissonClient redissonClient;
 
-    /**
-     * 出栈zset数据结构最小值
-     *
-     * @param key 有序集合键值
-     * @return 最小值
-     */
     public Object zPopMin(String key) {
         return redissonClient.getScoredSortedSet(key).pollFirst();
+    }
+
+    public boolean zadd(String key, Object field, double score) {
+        return redissonClient.getScoredSortedSet(key).add(score, field);
+    }
+
+    public boolean del(String key) {
+        return redissonClient.getScoredSortedSet(key).delete();
     }
 }
