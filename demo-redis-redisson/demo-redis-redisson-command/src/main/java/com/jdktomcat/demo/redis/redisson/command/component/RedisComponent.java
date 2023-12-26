@@ -23,6 +23,10 @@ public class RedisComponent {
         return redissonClient.getScoredSortedSet(key).pollFirst();
     }
 
+    public double firstScore(String key) {
+        return redissonClient.getScoredSortedSet(key).firstScore();
+    }
+
     public boolean zadd(String key, Object field, double score) {
         return redissonClient.getScoredSortedSet(key).add(score, field);
     }
