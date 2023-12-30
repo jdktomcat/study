@@ -29,9 +29,9 @@ public class DemoRedisRedissonCommandApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-        String key = "myzset1";
-        double score = redisComponent.firstScore(key);
-        System.out.println("最小分数值：" + score);
+        String key = "tx:pay:voucher:merchant_callback_domain:FDHK202312271557000014931";
+        String value = redisComponent.getPlainString(key);
+        System.out.println("值：" + value);
 //        for (int i = 0; i < 100; i++) {
 //            boolean add = redisComponent.zadd(key, "field" + i, i);
 //            System.out.println("元素" + i + " 添加结果：" + add);
