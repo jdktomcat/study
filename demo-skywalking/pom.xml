@@ -13,9 +13,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>demo-service-dubbo-api</module>
-        <module>demo-service-dubbo-provider</module>
-        <module>demo-service-dubbo-consumer</module>
+        <module>demo-skywalking-dubbo</module>
     </modules>
 
     <properties>
