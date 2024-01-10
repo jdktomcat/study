@@ -20,7 +20,7 @@ public class SkywalkingGatewayRouteApplication {
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
         return builder.routes().route(p -> p.path("/say")
                         .filters(f -> f.addRequestHeader("Hello", "World"))
-                        .uri("http://192.168.56.1:8083")).build();
+                        .uri("http://192.168.56.1:7001")).build();
     }
 
 }
