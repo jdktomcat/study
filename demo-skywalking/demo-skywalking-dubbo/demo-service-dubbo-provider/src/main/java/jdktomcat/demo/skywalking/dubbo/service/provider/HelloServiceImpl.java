@@ -1,6 +1,6 @@
-package jdktomcat.demo.skywalking.service.provider;
+package jdktomcat.demo.skywalking.dubbo.service.provider;
 
-import jdktomcat.demo.skywalking.service.api.HelloService;
+import jdktomcat.demo.skywalking.dubbo.service.api.HelloService;
 import org.apache.dubbo.config.annotation.DubboService;
 
 /**

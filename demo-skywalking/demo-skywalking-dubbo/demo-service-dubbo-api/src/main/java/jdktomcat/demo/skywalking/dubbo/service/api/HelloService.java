@@ -1,4 +1,4 @@
-package jdktomcat.demo.skywalking.service.api;
+package jdktomcat.demo.skywalking.dubbo.service.api;
 
 /**
  * 简单服务接口
