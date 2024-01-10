@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>demo-skywalking-gateway-route</module>
+        <module>demo-skywalking-gateway-service</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
