@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -37,13 +38,16 @@ public class ResetTraceIdFilter implements GlobalFilter, Ordered {
             Map<String, List<String>> headers = request.getHeaders();
             headers.forEach((key, dataList) -> {
                 if (key.contains("sw")) {
-                    request.getHeaders().replace(key, null);
+                    request.getHeaders().remove(key);
                     log.info("request reset head param key:{} value:{}",key, Arrays.toString(dataList.toArray()));
                 }
             });
-            ServerHttpRequest newRequest = request.mutate().build();
-            ServerWebExchange nExchange = exchange.mutate().request(newRequest).build();
-            return chain.filter(nExchange);
+            HttpHeaders httpHeaders = request.getHeaders();
+            ServerHttpRequest.Builder requestBuilder = request.mutate();
+            requestBuilder.headers(k -> k.remove("要修改的header的key"));
+            ServerHttpRequest newRequest = requestBuilder.build();
+            exchange.mutate().request(newRequest).build();
+            return chain.filter(exchange.mutate().request(newRequest).build());
         }
         return chain.filter(exchange);
     }

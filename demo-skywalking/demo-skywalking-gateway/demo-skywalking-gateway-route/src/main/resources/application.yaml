@@ -9,5 +9,3 @@ logging:
   level:
     root: info
   config: classpath:logback.xml
-  file:
-    name: /data/logs/demo/skywalking/gateway/route/route.log
