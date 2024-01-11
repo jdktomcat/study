@@ -1,7 +1,9 @@
 package jdktomcat.demo.skywalking.gateway.route.filter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
+import org.apache.skywalking.apm.toolkit.webflux.WebFluxSkyWalkingOperators;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -15,6 +17,7 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 /**
  * @author ZF-Timmy
@@ -31,26 +34,36 @@ public class ResetTraceIdFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        ServerHttpRequest request = exchange.getRequest();
-        String uri = request.getURI().toString();
-        log.info("request uri:{}", uri);
-        log.info("trace id:{}", TraceContext.traceId());
-        if (matchContext(uri)) {
-            ServerHttpRequest.Builder requestBuilder = request.mutate();
-            Map<String,List<String>> sourceHeaders = request.getHeaders();
-            requestBuilder.headers(headers -> {
-                sourceHeaders.forEach((key, dataList) -> {
-                    if (key.contains("sw")) {
-                        headers.remove(key);
-                        log.info("request reset head param key:{} value:{}", key, Arrays.toString(dataList.toArray()));
-                    }
-                });
-            });
-            ServerHttpRequest newRequest = requestBuilder.build();
-            exchange.mutate().request(newRequest).build();
-            return chain.filter(exchange.mutate().request(newRequest).build());
-        }
-        return chain.filter(exchange);
+        // 测试
+        TraceIdPatternLogbackLayout.defaultConverterMap.put("tid", TraceContext.traceId());
+        return WebFluxSkyWalkingOperators.continueTracing(exchange, new Callable<Mono<Void>>() {
+            /**
+             * Computes a result, or throws an exception if unable to do so.
+             *
+             * @return computed result
+             */
+            @Override
+            public Mono<Void> call() {
+                ServerHttpRequest request = exchange.getRequest();
+                String uri = request.getURI().toString();
+                if (matchContext(uri)) {
+                    ServerHttpRequest.Builder requestBuilder = request.mutate();
+                    Map<String, List<String>> sourceHeaders = request.getHeaders();
+                    requestBuilder.headers(headers -> {
+                        sourceHeaders.forEach((key, dataList) -> {
+                            if (key.contains("sw")) {
+                                headers.remove(key);
+                                log.info("request reset head param key:{} value:{}", key, Arrays.toString(dataList.toArray()));
+                            }
+                        });
+                    });
+                    ServerHttpRequest newRequest = requestBuilder.build();
+                    exchange.mutate().request(newRequest).build();
+                    return chain.filter(exchange.mutate().request(newRequest).build());
+                }
+                return chain.filter(exchange);
+            }
+        });
     }
 
     private boolean matchContext(String uri) {
