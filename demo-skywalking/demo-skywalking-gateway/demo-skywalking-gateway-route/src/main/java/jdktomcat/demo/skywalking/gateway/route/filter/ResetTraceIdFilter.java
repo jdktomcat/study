@@ -1,6 +1,7 @@
 package jdktomcat.demo.skywalking.gateway.route.filter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -33,6 +34,7 @@ public class ResetTraceIdFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         String uri = request.getURI().toString();
         log.info("request uri:{}", uri);
+        log.info("trace id:{}", TraceContext.traceId());
         if (matchContext(uri)) {
             ServerHttpRequest.Builder requestBuilder = request.mutate();
             Map<String,List<String>> sourceHeaders = request.getHeaders();
