@@ -12,9 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class HelloController {
 
-    @GetMapping("/say")
+    @GetMapping("/reset")
     public String say(String name) {
-        log.info("hello {}", name);
-        return "hello " + name;
+        log.info("reset {}", name);
+        return "reset " + name;
+    }
+
+    @GetMapping("/keep")
+    public String keep(String name) {
+        log.info("keep {}", name);
+        return "keep " + name;
     }
 }

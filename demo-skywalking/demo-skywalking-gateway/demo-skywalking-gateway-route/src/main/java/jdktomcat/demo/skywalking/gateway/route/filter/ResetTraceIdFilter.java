@@ -26,7 +26,7 @@ import java.util.Map;
 @Slf4j
 public class ResetTraceIdFilter implements GlobalFilter, Ordered {
 
-    @Value("${resetTraceIdUris:/say}")
+    @Value("${resetTraceIdUris:/reset}")
     private String resetTraceIdUris;
 
     @Override
