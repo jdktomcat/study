@@ -1,4 +1,4 @@
-package com.jdktomcat.demo.redis.template.Constant;
+package com.jdktomcat.demo.redis.template.constant;
 
 /**
  * @author ZF-Timmy

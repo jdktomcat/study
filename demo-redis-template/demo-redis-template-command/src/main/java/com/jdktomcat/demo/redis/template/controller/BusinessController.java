@@ -1,6 +1,6 @@
 package com.jdktomcat.demo.redis.template.controller;
 
-import com.jdktomcat.demo.redis.template.Constant.StringConstant;
+import com.jdktomcat.demo.redis.template.constant.StringConstant;
 import com.jdktomcat.demo.redis.template.component.RedisComponent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
