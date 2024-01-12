@@ -1,6 +1,6 @@
 spring:
   application:
-    name: demo-redis-redisson-command
+    name: demo-redis-template-command
   redis:
     password: DeGxqg19x0aext
     timeout: 2000 # 连接或读取超时时长（毫秒）
