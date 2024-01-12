@@ -1,6 +1,6 @@
-package com.jdktomcat.demo.redis.redisson.command;
+package com.jdktomcat.demo.redis.template;
 
-import com.jdktomcat.demo.redis.redisson.command.component.RedisComponent;
+import com.jdktomcat.demo.redis.template.component.RedisComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
