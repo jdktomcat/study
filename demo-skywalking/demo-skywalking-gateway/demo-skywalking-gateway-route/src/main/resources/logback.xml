@@ -11,7 +11,7 @@
     <!--显示日志-->
     <logger name="org.springframework.jdbc.core" additivity="false" level="DEBUG" >
         <appender-ref ref="STDOUT"/>
-    </logger>logback-nacos.xml
+    </logger>
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
