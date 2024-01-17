@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>jdktomcat.demo</groupId>
-        <artifactId>demo-skywalking-gateway</artifactId>
+        <artifactId>demo-skywalking-gateway-docker</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>demo-skywalking-gateway-service</artifactId>
+    <artifactId>demo-skywalking-gateway-docker-service</artifactId>
     <packaging>jar</packaging>
 
     <name>demo-skywalking-gateway-service</name>
