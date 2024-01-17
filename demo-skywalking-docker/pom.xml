@@ -13,7 +13,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>demo-skywalking-dubbo</module>
+        <module>demo-skywalking-docker-dubbo</module>
         <module>demo-skywalking-gateway-docker</module>
     </modules>
 

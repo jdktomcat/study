@@ -9,13 +9,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>demo-skywalking-dubbo</artifactId>
+    <artifactId>demo-skywalking-docker-dubbo</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>demo-service-dubbo-api</module>
-        <module>demo-service-dubbo-provider</module>
-        <module>demo-service-dubbo-consumer</module>
+        <module>demo-service-docker-dubbo-api</module>
+        <module>demo-service-docker-dubbo-provider</module>
+        <module>demo-service-docker-dubbo-consumer</module>
     </modules>
 
     <properties>
