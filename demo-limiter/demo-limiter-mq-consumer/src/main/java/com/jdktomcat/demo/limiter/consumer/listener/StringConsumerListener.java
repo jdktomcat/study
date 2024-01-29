@@ -83,9 +83,6 @@ public class StringConsumerListener implements RocketMQListener<String> {
          */
         @Override
         public void run() {
-            if (!redisComponent.getLock(String.format(BOT_LOCK, bot))) {
-                return;
-            }
             Set<String> botChatSet = redisComponent.getSetMember(String.format(BOT_CHAT_SET, bot));
             for (String chat : botChatSet) {
                 if (redisComponent.listLength(String.format(BOT_CHAT_MESSAGE_LIST, bot, chat)) == 0L) {
@@ -116,6 +113,9 @@ public class StringConsumerListener implements RocketMQListener<String> {
         consumerExecutor.scheduleAtFixedRate(() -> {
             Set<String> botSet = redisComponent.getSetMember(BOT_SET_KEY);
             for (String bot : botSet) {
+                if (!redisComponent.getLock(String.format(BOT_LOCK, bot))) {
+                    continue;
+                }
                 taskPoolExecutor.execute(new SendTask(bot, redisComponent, httpComponent));
             }
         }, 0, 30, TimeUnit.MILLISECONDS);
