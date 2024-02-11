@@ -8,7 +8,7 @@ import lombok.Data;
 @TableName("`user`")
 public class User {
 
-    private int id;
+    private Integer id;
 
     private String name;
 
