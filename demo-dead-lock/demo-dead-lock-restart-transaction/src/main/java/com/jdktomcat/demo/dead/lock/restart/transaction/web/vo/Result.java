@@ -35,28 +35,15 @@ public class Result<T> {
 
     public static final String ERROR_MSG = "系统异常,请联系管理员";
 
-    //没有权限的响应码
-
     public static final Integer NO_AUTH_CODE = 999;
-
-
-    //执行成功
 
     public static <T> Result<T> success(T data){
         return new Result<>(SUCCESS_CODE,SUCCESS_MSG,data);
     }
 
-    //执行失败
+    public static  Result<String> failed(String msg){
+        return new Result<>(ERROR_CODE, StringUtils.isEmpty(msg) ? ERROR_MSG : msg, "");
 
-    public static <T> Result<T> failed(String msg, T data){
-        return new Result<T>(ERROR_CODE, StringUtils.isEmpty(msg)? ERROR_MSG : msg,data);
-
-    }
-
-    //传入错误码的方法
-    public static Result<String> failed(int code, String msg){
-        msg = StringUtils.isEmpty(msg)? ERROR_MSG : msg;
-        return new Result<>(code, msg, "");
     }
 
 }

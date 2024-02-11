@@ -17,7 +17,12 @@ public class OrderController {
     @GetMapping("/one")
     public Result<?> one(){
         //统一返回值
-        return Result.success(withdrawOrderService.actionOne());
+        try {
+            return Result.success(withdrawOrderService.actionOne());
+        }catch (Exception exception){
+            return Result.failed(exception.getMessage());
+        }
+
     }
 
     @GetMapping("/two")

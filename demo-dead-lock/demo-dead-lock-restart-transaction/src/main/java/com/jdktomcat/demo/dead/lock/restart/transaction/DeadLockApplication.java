@@ -14,5 +14,4 @@ public class DeadLockApplication {
     public static void main(String[] args) {
         SpringApplication.run(DeadLockApplication.class, args);
     }
-
 }
