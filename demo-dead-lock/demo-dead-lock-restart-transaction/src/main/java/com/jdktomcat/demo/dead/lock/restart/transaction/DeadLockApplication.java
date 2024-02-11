@@ -10,10 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2023/11/13
  */
 @SpringBootApplication
-public class DemoDeadLockRestartTransactionApplication {
-
+public class DeadLockApplication {
     public static void main(String[] args) {
-        SpringApplication.run(DemoDeadLockRestartTransactionApplication.class, args);
+        SpringApplication.run(DeadLockApplication.class, args);
     }
 
 }
