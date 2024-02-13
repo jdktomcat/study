@@ -47,7 +47,9 @@ public class DeadLockInterceptor extends MybatisPlusInterceptor {
             if(transactionRollbackException.getSQLState().equalsIgnoreCase("40001")){
                 // 死锁场景处理
                 log.info("即将回滚事务：{}", TransactionSynchronizationManager.getCurrentTransactionName());
-                log.info("即将回滚事务中的SQL命令列表：{}", TransactionSynchronizationManager.getSynchronizations().toArray(new TransactionSynchronization[0]));
+                TransactionSynchronization[] transactionSynchronizations = new TransactionSynchronization[0];
+                TransactionSynchronizationManager.getSynchronizations().toArray(transactionSynchronizations);
+                log.info("即将回滚事务中的SQL命令列表：{}", transactionSynchronizations);
             }
         }
         throw exception;
