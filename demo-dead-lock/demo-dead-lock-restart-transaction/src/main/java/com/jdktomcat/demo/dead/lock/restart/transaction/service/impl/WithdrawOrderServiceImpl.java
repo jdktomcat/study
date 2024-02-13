@@ -26,7 +26,7 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
         int update1 = withdrawOrderMapper.update(updateEntry1, new QueryWrapper<WithdrawOrder>().eq("OrderId","MW120240131205432608682300"));
         log.info("action one update1:{}",update1);
         try{
-            TimeUnit.SECONDS.sleep(30);
+            TimeUnit.SECONDS.sleep(5);
         }catch (Exception ex){
             log.error("occur some exception!",ex);
         }
