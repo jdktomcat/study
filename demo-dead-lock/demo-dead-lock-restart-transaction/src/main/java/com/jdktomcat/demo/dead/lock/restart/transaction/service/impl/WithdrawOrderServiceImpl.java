@@ -1,14 +1,17 @@
 package com.jdktomcat.demo.dead.lock.restart.transaction.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jdktomcat.demo.dead.lock.restart.transaction.mapper.WithdrawOrderMapper;
 import com.jdktomcat.demo.dead.lock.restart.transaction.model.WithdrawOrder;
 import com.jdktomcat.demo.dead.lock.restart.transaction.service.IWithdrawOrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -18,12 +21,16 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
     @Autowired
     private WithdrawOrderMapper withdrawOrderMapper;
 
+    public static String[] TARGETS = {"MW120240131205432608682300","MW120240131205432601682300","MW120240131205432593682300"};
+
     @Override
     @Transactional
     public String actionOne() {
+        List<WithdrawOrder> updateEntryList = withdrawOrderMapper.queryListForUpdate(StringUtils.join(TARGETS, ","));
+        log.info("获取排他锁成功！锁信息：{}", JSONObject.toJSONString(updateEntryList));
         WithdrawOrder updateEntry1 = new WithdrawOrder();
         updateEntry1.setOrderStatus(1);
-        int update1 = withdrawOrderMapper.update(updateEntry1, new QueryWrapper<WithdrawOrder>().eq("OrderId","MW120240131205432608682300"));
+        int update1 = withdrawOrderMapper.update(updateEntry1, new QueryWrapper<WithdrawOrder>().eq("OrderId",TARGETS[0]));
         log.info("action one update1:{}",update1);
         try{
             TimeUnit.SECONDS.sleep(5);
@@ -32,7 +39,7 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
         }
         WithdrawOrder updateEntry2 = new WithdrawOrder();
         updateEntry2.setParentOrderStatus(1);
-        int update2 = withdrawOrderMapper.update(updateEntry2, new QueryWrapper<WithdrawOrder>().in("OrderId","MW120240131205432601682300","MW120240131205432593682300"));
+        int update2 = withdrawOrderMapper.update(updateEntry2, new QueryWrapper<WithdrawOrder>().in("OrderId",TARGETS[1],TARGETS[2]));
         log.info("action one update2:{}", update2);
         return "action one have done!";
     }
