@@ -9,7 +9,6 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
-import org.apache.ibatis.transaction.Transaction;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -31,7 +30,6 @@ public class DeadLockInterceptor extends MybatisPlusInterceptor {
     @Override
     public Object intercept(Invocation invocation) throws InvocationTargetException, IllegalAccessException, SQLException {
         try{
-
             return invocation.proceed();
         }catch (InvocationTargetException exception){
             log.error("数据库更新异常！", exception);
@@ -48,7 +46,7 @@ public class DeadLockInterceptor extends MybatisPlusInterceptor {
                 // 死锁场景处理
                 log.info("即将回滚事务：{}", TransactionSynchronizationManager.getCurrentTransactionName());
                 TransactionSynchronization[] transactionSynchronizations = new TransactionSynchronization[0];
-                TransactionSynchronizationManager.getSynchronizations().toArray(transactionSynchronizations);
+                transactionSynchronizations = TransactionSynchronizationManager.getSynchronizations().toArray(transactionSynchronizations);
                 log.info("即将回滚事务中的SQL命令列表：{}", transactionSynchronizations);
             }
         }
