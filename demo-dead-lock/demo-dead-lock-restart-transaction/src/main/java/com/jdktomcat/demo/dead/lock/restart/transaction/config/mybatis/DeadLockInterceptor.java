@@ -10,7 +10,6 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
-import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.lang.reflect.InvocationTargetException;
@@ -30,7 +29,7 @@ import java.util.Map;
 public class DeadLockInterceptor extends MybatisPlusInterceptor {
 
     @Override
-    public Object intercept(Invocation invocation) throws InvocationTargetException, IllegalAccessException, SQLException {
+    public Object intercept(Invocation invocation) throws InvocationTargetException, IllegalAccessException {
         try{
             return invocation.proceed();
         }catch (InvocationTargetException exception){
