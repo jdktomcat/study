@@ -2,10 +2,9 @@ package com.jdktomcat.demo.redis.redisson.lock.web.controller;
 
 import com.jdktomcat.demo.redis.redisson.lock.service.IWithdrawOrderService;
 import com.jdktomcat.demo.redis.redisson.lock.web.vo.Result;
+import com.jdktomcat.demo.redis.redisson.lock.web.vo.WithdrawRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/order")
@@ -31,5 +30,12 @@ public class OrderController {
         return Result.success(withdrawOrderService.actionTwo());
     }
 
+
+
+    @PostMapping("/withdraw")
+    public Result<?> withdraw(@RequestBody WithdrawRequest withdrawRequest){
+        //统一返回值
+        return Result.success(withdrawOrderService.merchantWithdraw(withdrawRequest.getMerchantId(),withdrawRequest.getOrderId(),withdrawRequest.getAmount()));
+    }
 
 }
