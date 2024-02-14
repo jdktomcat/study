@@ -21,7 +21,6 @@ public class OrderController {
         }catch (Exception exception){
             return Result.failed(exception.getMessage());
         }
-
     }
 
     @GetMapping("/two")
@@ -30,12 +29,9 @@ public class OrderController {
         return Result.success(withdrawOrderService.actionTwo());
     }
 
-
-
     @PostMapping("/withdraw")
     public Result<?> withdraw(@RequestBody WithdrawRequest withdrawRequest){
         //统一返回值
         return Result.success(withdrawOrderService.merchantWithdraw(withdrawRequest.getMerchantId(),withdrawRequest.getOrderId(),withdrawRequest.getAmount()));
     }
-
 }
