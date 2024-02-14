@@ -13,13 +13,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2023/11/13
  */
 @SpringBootApplication
-public class DemoRedisRedissonCommandApplication implements CommandLineRunner {
+public class RedisCommandApplication implements CommandLineRunner {
 
     @Autowired
     private RedisComponent redisComponent;
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoRedisRedissonCommandApplication.class, args);
+        SpringApplication.run(RedisCommandApplication.class, args);
     }
 
     /**
