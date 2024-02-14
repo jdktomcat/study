@@ -26,7 +26,7 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
     @Override
     @Transactional
     public String actionOne() {
-        List<WithdrawOrder> updateEntryList = withdrawOrderMapper.queryListForUpdate(StringUtils.join(TARGETS, ","));
+        List<String> updateEntryList = withdrawOrderMapper.queryListForUpdate(StringUtils.join(TARGETS, ","));
         log.info("获取排他锁成功！锁信息：{}", JSONObject.toJSONString(updateEntryList));
         WithdrawOrder updateEntry1 = new WithdrawOrder();
         updateEntry1.setOrderStatus(1);
