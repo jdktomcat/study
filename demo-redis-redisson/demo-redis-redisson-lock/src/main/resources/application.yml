@@ -1,17 +1,18 @@
 spring:
   application:
     name: demo-redis-redisson-lock
-  redis:
-    password: DeGxqg19x0aext
-    timeout: 2000
-    cluster:
-      nodes: 172.31.185.66:7001,172.31.185.66:7002,172.31.185.67:7001,172.31.185.67:7002,172.31.185.68:7001,172.31.185.68:7002
-    jedis:
-      pool:
-        max-active: 8
-        max-wait: 800
-        max-idle: 8
-        min-idle: 2
+  data:
+    redis:
+      password: DeGxqg19x0aext
+      timeout: 2000
+      cluster:
+        nodes: 172.31.185.66:7001,172.31.185.66:7002,172.31.185.67:7001,172.31.185.67:7002,172.31.185.68:7001,172.31.185.68:7002
+      jedis:
+        pool:
+          max-active: 8
+          max-wait: 800
+          max-idle: 8
+          min-idle: 2
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.56.1:3307/typayv2?useSSL=false&useUnicode=true&characterEncoding=UTF-8
