@@ -1,9 +1,14 @@
 package com.jdktomcat.demo.redis.redisson.lock.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jdktomcat.demo.redis.redisson.lock.component.lock.RedisLockHelper;
+import com.jdktomcat.demo.redis.redisson.lock.mapper.BalanceRecordMapper;
+import com.jdktomcat.demo.redis.redisson.lock.mapper.MerchantMapper;
 import com.jdktomcat.demo.redis.redisson.lock.mapper.WithdrawOrderMapper;
 import com.jdktomcat.demo.redis.redisson.lock.model.WithdrawOrder;
+import com.jdktomcat.demo.redis.redisson.lock.service.IDeductionService;
 import com.jdktomcat.demo.redis.redisson.lock.service.IWithdrawOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -20,6 +26,18 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
 
     @Autowired
     private WithdrawOrderMapper withdrawOrderMapper;
+
+    @Autowired
+    private MerchantMapper merchantMapper;
+
+    @Autowired
+    private BalanceRecordMapper balanceRecordMapper;
+
+    @Autowired
+    private RedisLockHelper redisLockHelper;
+
+    @Autowired
+    private IDeductionService deductionService;
 
     public static String[] TARGETS_ONE = {"MW120240131205432608682300","MW120240131205432601682300","MW120240131205432593682300"};
 
@@ -69,10 +87,27 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
     @Override
     @Transactional
     public String actionTwo() {
+        List<String> updateEntryList = withdrawOrderMapper.queryListForUpdate(StringUtils.join(TARGETS_TWO, ","));
+        log.info("获取排他锁成功！锁信息：{}", JSONObject.toJSONString(updateEntryList));
         WithdrawOrder updateEntry = new WithdrawOrder();
         updateEntry.setParentOrderStatus(1);
         int update = withdrawOrderMapper.update(updateEntry, new QueryWrapper<WithdrawOrder>().in("OrderId", TARGETS_TWO));
         log.info("action two update:{}", update);
         return "action two have done!";
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String merchantWithdraw(Integer merchantId, String orderId, BigDecimal amount) {
+        try (final RedisLockHelper.AutoCloseRedisLock ignored = redisLockHelper.merchantBalanceLock(merchantId)) {
+            log.info("商户:{} 提款单:{} 预扣费：{} 开始于:{}", merchantId, orderId, amount, System.currentTimeMillis());
+            //商户类型仅作为标识内部与外部商户,不影响该商户余额帐变
+            String result = deductionService.withdrawDeduction(merchantId, orderId, amount);
+            log.info("商户:{} 提款单:{} 预扣费：{}  结束于:{}", merchantId, orderId, amount, System.currentTimeMillis());
+            return result;
+        } catch (Exception e) {
+            log.error("商户与扣款失败！", e);
+            throw new RuntimeException("商户余额不足", e);
+        }
     }
 }
