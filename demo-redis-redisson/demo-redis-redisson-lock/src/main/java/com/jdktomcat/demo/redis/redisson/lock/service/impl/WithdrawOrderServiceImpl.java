@@ -94,6 +94,11 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
             log.info("商户:{} 提款单:{} 预扣费：{} 开始于:{}", merchantId, orderId, amount, System.currentTimeMillis());
             //商户类型仅作为标识内部与外部商户,不影响该商户余额帐变
             String result = deductionService.withdrawDeduction(merchantId, orderId, amount);
+            try{
+                TimeUnit.MILLISECONDS.sleep(50);
+            }catch (Exception ex){
+                log.error("occur some exception!",ex);
+            }
             log.info("商户:{} 提款单:{} 预扣费：{}  结束于:{}", merchantId, orderId, amount, System.currentTimeMillis());
             return result;
         } catch (Exception e) {
