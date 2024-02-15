@@ -10,5 +10,7 @@ public interface IWithdrawOrderService {
 
     String actionTwo();
 
+    String actionThree();
+
     String merchantWithdraw(Integer merchantId, String orderId, BigDecimal amount);
 }

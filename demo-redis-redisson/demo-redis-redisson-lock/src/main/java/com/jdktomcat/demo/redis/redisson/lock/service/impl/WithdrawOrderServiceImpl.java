@@ -30,7 +30,7 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
     @Autowired
     private IDeductionService deductionService;
 
-    public static String[] TARGETS_ONE = {"MW120240131205432608682300","MW120240131205432601682300","MW120240131205432593682300"};
+    public static String[] TARGETS_ONE = {"MW120240131205432608682300","MW120240131205432601682300","MW120240131205432593682300","H3000054240131205437745628f00"};
 
     public static String[] TARGETS_TWO = {
             "MW120240131205423765682300",
@@ -38,9 +38,6 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
             "MW120240131205432593682300",
             "MW120240131205432601682300",
             "MW120240131205432608682300",
-            "H3000054240131205437745628f00",
-            "H3000074240131205444642629100",
-            "H3000054240131205457361629100",
             "MW120240131205457394681100",
             "MW120240131205457402681100",
             "MW120240131205457410681100",
@@ -53,6 +50,12 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
             "H3002054240131205458285629100",
             "H3007404240131205459194629000",
             "H3001704240131205501708629100"
+    };
+
+    public static String[] TARGETS_THREE = {
+            "H3000054240131205437745628f00",
+            "H3000074240131205444642629100",
+            "H3000054240131205457361629100"
     };
     @Override
     @Transactional
@@ -85,6 +88,23 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
         int update = withdrawOrderMapper.update(updateEntry, new QueryWrapper<WithdrawOrder>().in("order_id", TARGETS_TWO));
         log.info("action two update:{}", update);
         return "action two have done!";
+    }
+
+    @Override
+    @Transactional
+    public String actionThree() {
+        List<String> updateEntryList = withdrawOrderMapper.queryListForUpdate(StringUtils.join(TARGETS_THREE, ","));
+        log.info("获取排他锁成功！锁信息：{}", JSONObject.toJSONString(updateEntryList));
+        WithdrawOrder updateEntry = new WithdrawOrder();
+        updateEntry.setParentOrderStatus(1);
+        int update = withdrawOrderMapper.update(updateEntry, new QueryWrapper<WithdrawOrder>().in("order_id", TARGETS_THREE));
+        try{
+            TimeUnit.SECONDS.sleep(10);
+        }catch (Exception ex){
+            log.error("occur some exception!",ex);
+        }
+        log.info("action three update:{}", update);
+        return "action three have done!";
     }
 
     @Override

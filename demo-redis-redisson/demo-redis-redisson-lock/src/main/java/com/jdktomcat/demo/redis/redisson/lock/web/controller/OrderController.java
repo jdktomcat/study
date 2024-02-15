@@ -29,6 +29,12 @@ public class OrderController {
         return Result.success(withdrawOrderService.actionTwo());
     }
 
+    @GetMapping("/three")
+    public Result<?> three(){
+        //统一返回值
+        return Result.success(withdrawOrderService.actionThree());
+    }
+
     @PostMapping("/withdraw")
     public Result<?> withdraw(@RequestBody WithdrawRequest withdrawRequest){
         //统一返回值
