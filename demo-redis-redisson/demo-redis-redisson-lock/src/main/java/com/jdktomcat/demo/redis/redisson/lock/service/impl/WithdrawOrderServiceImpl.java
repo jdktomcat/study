@@ -1,11 +1,8 @@
 package com.jdktomcat.demo.redis.redisson.lock.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jdktomcat.demo.redis.redisson.lock.component.lock.RedisLockHelper;
-import com.jdktomcat.demo.redis.redisson.lock.mapper.BalanceRecordMapper;
-import com.jdktomcat.demo.redis.redisson.lock.mapper.MerchantMapper;
 import com.jdktomcat.demo.redis.redisson.lock.mapper.WithdrawOrderMapper;
 import com.jdktomcat.demo.redis.redisson.lock.model.WithdrawOrder;
 import com.jdktomcat.demo.redis.redisson.lock.service.IDeductionService;
@@ -26,12 +23,6 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
 
     @Autowired
     private WithdrawOrderMapper withdrawOrderMapper;
-
-    @Autowired
-    private MerchantMapper merchantMapper;
-
-    @Autowired
-    private BalanceRecordMapper balanceRecordMapper;
 
     @Autowired
     private RedisLockHelper redisLockHelper;
@@ -70,7 +61,7 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
         log.info("获取排他锁成功！锁信息：{}", JSONObject.toJSONString(updateEntryList));
         WithdrawOrder updateEntry1 = new WithdrawOrder();
         updateEntry1.setOrderStatus(1);
-        int update1 = withdrawOrderMapper.update(updateEntry1, new QueryWrapper<WithdrawOrder>().eq("OrderId",TARGETS_ONE[0]));
+        int update1 = withdrawOrderMapper.update(updateEntry1, new QueryWrapper<WithdrawOrder>().eq("order_id",TARGETS_ONE[0]));
         log.info("action one update1:{}",update1);
         try{
             TimeUnit.SECONDS.sleep(5);
@@ -79,7 +70,7 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
         }
         WithdrawOrder updateEntry2 = new WithdrawOrder();
         updateEntry2.setParentOrderStatus(1);
-        int update2 = withdrawOrderMapper.update(updateEntry2, new QueryWrapper<WithdrawOrder>().in("OrderId",TARGETS_ONE[1],TARGETS_ONE[2]));
+        int update2 = withdrawOrderMapper.update(updateEntry2, new QueryWrapper<WithdrawOrder>().in("order_id",TARGETS_ONE[1],TARGETS_ONE[2]));
         log.info("action one update2:{}", update2);
         return "action one have done!";
     }
@@ -91,7 +82,7 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
         log.info("获取排他锁成功！锁信息：{}", JSONObject.toJSONString(updateEntryList));
         WithdrawOrder updateEntry = new WithdrawOrder();
         updateEntry.setParentOrderStatus(1);
-        int update = withdrawOrderMapper.update(updateEntry, new QueryWrapper<WithdrawOrder>().in("OrderId", TARGETS_TWO));
+        int update = withdrawOrderMapper.update(updateEntry, new QueryWrapper<WithdrawOrder>().in("order_id", TARGETS_TWO));
         log.info("action two update:{}", update);
         return "action two have done!";
     }
