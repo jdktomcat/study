@@ -4,5 +4,5 @@ Content-Type: application/json
 {
   "merchantId": 1,
   "orderId": "content",
-  "amount": 20
+  "amount": "20.00"
 }
