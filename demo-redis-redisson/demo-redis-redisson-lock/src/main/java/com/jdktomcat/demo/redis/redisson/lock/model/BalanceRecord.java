@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@TableName("`t_withdraw_order`")
+@TableName("`t_balance_record`")
 public class BalanceRecord {
 
     @TableId(value = "order_id")
