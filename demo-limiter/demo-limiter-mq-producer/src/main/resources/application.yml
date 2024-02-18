@@ -5,10 +5,12 @@ spring:
 rocketmq:
   name-server: 172.31.184.45:9876
   producer:
-    group: timmy-group
     sendMessageTimeout: 300000
+    instanceName: tradeNoProducer
+    maxMessageSize: 131072
+    namespace: timmy-group
 
 # properties used in the application
 demo:
   rocketmq:
-    topic: telegram_send_topic:telegram_send_nomal_tag
+    topic: telegram_send_topic:telegram_send_normal_tag
