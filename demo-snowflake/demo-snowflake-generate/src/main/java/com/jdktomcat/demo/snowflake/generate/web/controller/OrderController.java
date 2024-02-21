@@ -14,20 +14,14 @@ public class OrderController {
     @Autowired
     private IWithdrawOrderService withdrawOrderService;
 
-    @GetMapping("/one")
-    public Result<?> one() {
+    @GetMapping("/insert")
+    public Result<?> insert() {
         //统一返回值
         try {
-            return Result.success(withdrawOrderService.actionOne());
+            return Result.success(withdrawOrderService.insert());
         } catch (Exception exception) {
             return Result.failed(exception.getMessage());
         }
 
-    }
-
-    @GetMapping("/two")
-    public Result<?> two() {
-        //统一返回值
-        return Result.success(withdrawOrderService.actionTwo());
     }
 }
