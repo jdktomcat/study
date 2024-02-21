@@ -2,12 +2,16 @@ package com.jdktomcat.demo.redis.template.component;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -65,6 +69,15 @@ public class RedisComponent {
         }
     }
 
+    public boolean setIfAbsent(String key, String value, long timeout, TimeUnit timeUnit) {
+        if (!StringUtils.isEmpty(key) && !StringUtils.isEmpty(value)) {
+            log.info("redis设值缓存,key:{} value:{} timeout:{} unit:{}", key, value, timeout, timeUnit);
+            return Boolean.TRUE.equals(redisTemplate.execute((RedisCallback<Boolean>) connection -> connection.set(key.getBytes(StandardCharsets.UTF_8), value.getBytes(StandardCharsets.UTF_8), Expiration.from(timeout, timeUnit), RedisStringCommands.SetOption.SET_IF_ABSENT)));
+        }
+        return false;
+    }
+
+
     public long getExpire(String key) {
         try {
             return redisTemplate.opsForValue().getOperations().getExpire(key);
@@ -73,6 +86,8 @@ public class RedisComponent {
             return 0;
         }
     }
+
+
 
     public Object get(String key) {
         try {
