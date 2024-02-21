@@ -26,11 +26,11 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYYMMDDHHmmss");
         for(int i=0;i<100;i++){
             WithdrawOrder withdrawOrder = new WithdrawOrder();
-            withdrawOrder.setOrderIndex(SnowflakeIdWorker.createTableId());
-            withdrawOrder.setOrderId("JSTWZORDER"+ simpleDateFormat.format(new Date())+ RandomStringUtils.random(5).toUpperCase());
+            withdrawOrder.setId(SnowflakeIdWorker.createTableId());
+            withdrawOrder.setOrderId("JSTWZORDER"+ simpleDateFormat.format(new Date())+ RandomStringUtils.randomAlphabetic(5).toUpperCase());
             withdrawOrder.setOrderStatus(1);
             withdrawOrder.setParentOrderStatus(1);
-            withdrawOrder.setMerchantOrderId("JSTWZMO"+ simpleDateFormat.format(new Date())+ RandomStringUtils.random(5).toUpperCase());
+            withdrawOrder.setMerchantOrderId("JSTWZMO"+ simpleDateFormat.format(new Date())+ RandomStringUtils.randomAlphabetic(5).toUpperCase());
             withdrawOrder.setParentOrderStatus(1);
             withdrawOrder.setCreateTime(new Date());
             int save = withdrawOrderMapper.insert(withdrawOrder);
