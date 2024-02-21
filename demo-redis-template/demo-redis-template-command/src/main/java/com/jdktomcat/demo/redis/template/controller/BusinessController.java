@@ -27,11 +27,9 @@ public class BusinessController {
     @PostMapping("/cache")
     public String addCache(String orderId) {
         String key = StringConstant.CACHE_ORDER + orderId;
-        boolean addResult = redisComponent.set(key, StringConstant.ORDER_JSON);
+        boolean addResult = redisComponent.setIfAbsent(key, StringConstant.ORDER_JSON,3,TimeUnit.SECONDS);
         log.info("添加缓存{}，结果：{}", key, addResult);
-        boolean expireResult = redisComponent.expire(key, TimeUnit.MINUTES.toSeconds(180));
-        log.info("缓存超时{}，结果：{}", key, expireResult);
-        return "1";
+        return addResult?"1":"0";
     }
 
     @DeleteMapping("/del")

@@ -2,12 +2,16 @@ package com.jdktomcat.demo.redis.template.component;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -63,6 +67,27 @@ public class RedisComponent {
             log.error("redis Exception: {}", ex.getMessage(), ex);
             return 0;
         }
+    }
+
+    /**
+     * 设值,只有在不存在的情况下才设置成功
+     *
+     * @param key      键
+     * @param value    值
+     * @param timeout  超时时长
+     * @param timeUnit 单位
+     * @return true 设置成功 false 设置失败
+     */
+    public boolean setIfAbsent(String key, String value, long timeout, TimeUnit timeUnit) {
+        if (!StringUtils.isEmpty(key) && !StringUtils.isEmpty(value)) {
+            Object result = redisTemplate.execute((RedisCallback<Boolean>) connection -> {
+                Boolean set = connection.set(key.getBytes(StandardCharsets.UTF_8), value.getBytes(StandardCharsets.UTF_8), Expiration.from(timeout, timeUnit), RedisStringCommands.SetOption.SET_IF_ABSENT);
+                log.info("redis设值缓存,key:{} value:{} timeout:{} unit:{} result:{}", key, value, timeout, timeUnit, set);
+                return set;
+            });
+            return Boolean.TRUE.equals(result);
+        }
+        return false;
     }
 
     public long getExpire(String key) {
