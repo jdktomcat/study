@@ -1,16 +1,10 @@
 spring:
   application:
-    name: demo-limiter-mq-producer
-
-rocketmq:
-  name-server: 172.31.184.45:9876
-  producer:
-    sendMessageTimeout: 300000
-    instanceName: tradeNoProducer
-    maxMessageSize: 131072
-    namespace: timmy-group
-
-# properties used in the application
-demo:
-  rocketmq:
-    topic: telegram_send_topic:telegram_send_normal_tag
+    name: demo-snowflake-generate
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.56.1:3307/typayv2?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 1234
+server:
+  port: 0
