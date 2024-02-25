@@ -46,6 +46,7 @@ public class DemoLimiterProducerApplication implements CommandLineRunner {
             distributeMessage.setType(tag);
             distributeMessage.setUsername("username"+i);
             distributeMessage.setWithdrawOrderList(new ArrayList<>());
+            DistributeMessage.WithdrawOrderDto withdrawOrderDto = new DistributeMessage.WithdrawOrderDto();
             SendResult sendResult = messageProducerComponent.sendDisMessage(JSONObject.toJSONString(distributeMessage), key+i);
             log.info("syncSend to sendResult:{}", sendResult);
         }
