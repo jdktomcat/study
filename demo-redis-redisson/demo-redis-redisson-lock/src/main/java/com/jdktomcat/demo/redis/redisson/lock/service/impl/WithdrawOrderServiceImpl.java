@@ -60,8 +60,8 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
     @Override
     @Transactional
     public String actionOne() {
-        List<String> updateEntryList = withdrawOrderMapper.queryListForUpdate(StringUtils.join(TARGETS_ONE, ","));
-        log.info("获取排他锁成功！锁信息：{}", JSONObject.toJSONString(updateEntryList));
+//        List<String> updateEntryList = withdrawOrderMapper.queryListForUpdate(StringUtils.join(TARGETS_ONE, ","));
+//        log.info("获取排他锁成功！锁信息：{}", JSONObject.toJSONString(updateEntryList));
         WithdrawOrder updateEntry1 = new WithdrawOrder();
         updateEntry1.setOrderStatus(1);
         int update1 = withdrawOrderMapper.update(updateEntry1, new QueryWrapper<WithdrawOrder>().eq("order_id",TARGETS_ONE[0]));
@@ -81,8 +81,8 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
     @Override
     @Transactional
     public String actionTwo() {
-        List<String> updateEntryList = withdrawOrderMapper.queryListForUpdate(StringUtils.join(TARGETS_TWO, ","));
-        log.info("获取排他锁成功！锁信息：{}", JSONObject.toJSONString(updateEntryList));
+//        List<String> updateEntryList = withdrawOrderMapper.queryListForUpdate(StringUtils.join(TARGETS_TWO, ","));
+//        log.info("获取排他锁成功！锁信息：{}", JSONObject.toJSONString(updateEntryList));
         WithdrawOrder updateEntry = new WithdrawOrder();
         updateEntry.setParentOrderStatus(1);
         int update = withdrawOrderMapper.update(updateEntry, new QueryWrapper<WithdrawOrder>().in("order_id", TARGETS_TWO));
