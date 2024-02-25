@@ -1,16 +1,15 @@
 spring:
   application:
     name: demo-limiter-mq-producer
-
 rocketmq:
-  name-server: 172.31.184.45:9876
+  name-server: 172.31.184.43:9876
   producer:
     sendMessageTimeout: 300000
-    instanceName: tradeNoProducer
     maxMessageSize: 131072
-    namespace: timmy-group
+    group: timmy-group
 
-# properties used in the application
 demo:
   rocketmq:
     topic: telegram_send_topic:telegram_send_normal_tag
+    dis:
+      topic: channelDistribution:findDistributionMatchupJob
