@@ -2,7 +2,7 @@ spring:
   application:
     name: demo-limiter-mq-producer
 rocketmq:
-  name-server: 172.31.184.43:9876
+  name-server: 172.31.184.45:9876
   producer:
     sendMessageTimeout: 300000
     maxMessageSize: 131072
