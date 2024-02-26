@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @SpringBootApplication
@@ -39,7 +40,7 @@ public class DemoLimiterProducerApplication implements CommandLineRunner {
     private static final String key = "分配至极速订单";
 
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws InterruptedException {
         int i = 0;
         while (i++ < 100000) {
             DistributeMessage distributeMessage = new DistributeMessage();
@@ -50,6 +51,7 @@ public class DemoLimiterProducerApplication implements CommandLineRunner {
             withdrawOrderDto.setOrderIndex(2210171858242079902L);
             SendResult sendResult = messageProducerComponent.sendDisMessage(JSONObject.toJSONString(distributeMessage), key+i);
             log.info("syncSend to sendResult:{}", sendResult);
+            TimeUnit.SECONDS.sleep(1);
         }
     }
 }
