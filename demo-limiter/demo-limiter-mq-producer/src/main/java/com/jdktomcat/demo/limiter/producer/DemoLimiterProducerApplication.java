@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -42,13 +43,14 @@ public class DemoLimiterProducerApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws InterruptedException {
         int i = 0;
-        while (i++ < 100000) {
+        while (i++ < 10000) {
             DistributeMessage distributeMessage = new DistributeMessage();
             distributeMessage.setType(tag);
-            distributeMessage.setUsername("username"+i);
-            distributeMessage.setWithdrawOrderList(new ArrayList<>());
+            distributeMessage.setUsername("timmy"+i);
+            List<DistributeMessage.WithdrawOrderDto> dataList = new ArrayList<>();
             DistributeMessage.WithdrawOrderDto withdrawOrderDto = new DistributeMessage.WithdrawOrderDto();
             withdrawOrderDto.setOrderIndex(2210171858242079902L);
+            distributeMessage.setWithdrawOrderList(dataList);
             SendResult sendResult = messageProducerComponent.sendDisMessage(JSONObject.toJSONString(distributeMessage), key+i);
             log.info("syncSend to sendResult:{}", sendResult);
             TimeUnit.SECONDS.sleep(1);
