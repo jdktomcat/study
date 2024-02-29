@@ -26,6 +26,9 @@ public class MessageProducerComponent {
     @Value("${demo.rocketmq.dis.topic}")
     private String disTopic;
 
+    @Value("${demo.rocketmq.delay.topic}")
+    private String delayTopic;
+
     /**
      * 发送消息
      *
@@ -44,5 +47,15 @@ public class MessageProducerComponent {
      */
     public SendResult sendDisMessage(String message, String hashKey) {
         return rocketMQTemplate.syncSendOrderly(disTopic, message, hashKey);
+    }
+
+    /**
+     * 发送消息
+     *
+     * @param message 消息
+     * @return 发送结果
+     */
+    public SendResult sendDelayMessage(String message, String hashKey) {
+        return rocketMQTemplate.syncSendOrderly(delayTopic, message, hashKey);
     }
 }

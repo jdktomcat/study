@@ -38,10 +38,24 @@ public class RocketMqProducerApplication implements CommandLineRunner {
 
     private static final String tag = "findDistributionMatchupJob";
 
-    private static final String key = "分配至极速订单";
+    private static final String key = "延遲訂單";
 
     @Override
-    public void run(String... args) throws InterruptedException {
+    public void run(String... args) {
+        sendDelayMessage();
+    }
+
+
+    private void sendDelayMessage() {
+        int i = 0;
+        while (i++ < 10000) {
+            SendResult sendResult = messageProducerComponent.sendDelayMessage("JSTWZ20240229153150E19M", key+i);
+            log.info("syncSend to sendResult:{}", sendResult);
+        }
+    }
+
+
+    private void sendDisMessage() throws InterruptedException {
         int i = 0;
         while (i++ < 10000) {
             DistributeMessage distributeMessage = new DistributeMessage();

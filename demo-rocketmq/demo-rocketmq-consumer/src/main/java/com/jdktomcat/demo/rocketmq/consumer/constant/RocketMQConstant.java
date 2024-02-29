@@ -11,16 +11,11 @@ public class RocketMQConstant {
     /**
      * 延迟消息队列主题
      */
-    public static final String DELAY_MESSAGE_TOPIC = "DELAY_MESSAGE_TOPIC";
+    public static final String DELAY_MESSAGE_TOPIC = "DELAY_MESSAGE_TOPIC_NEW";
     /**
      * 延迟消息队列主题
      */
     public static final String DELAY_MESSAGE_TOPIC_TAG_VOUCHER = "voucher";
-
-    /**
-     * 延迟消息队列主题
-     */
-    public static final String DELAY_MESSAGE_TOPIC_TAG_CHANGE = "change";
 
     /**
      * 延迟循环tag标记
@@ -147,9 +142,7 @@ public class RocketMQConstant {
         // 延迟消息订阅TAG
         TOPIC_AND_TAG.put(RocketMQConstant.DELAY_MESSAGE_TOPIC, new String[]{
                         RocketMQConstant.DELAY_CYCLE_PREFIX + RocketMQConstant.DELAY_MESSAGE_TOPIC_TAG_VOUCHER,
-                        RocketMQConstant.DELAY_CYCLE_PREFIX + RocketMQConstant.DELAY_MESSAGE_TOPIC_TAG_CHANGE,
                         RocketMQConstant.DELAY_MESSAGE_TOPIC_TAG_VOUCHER,
-                        RocketMQConstant.DELAY_MESSAGE_TOPIC_TAG_CHANGE
                 }
         );
         return TOPIC_AND_TAG;
