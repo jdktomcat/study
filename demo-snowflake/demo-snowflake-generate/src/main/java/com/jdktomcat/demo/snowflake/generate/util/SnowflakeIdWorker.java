@@ -1,5 +1,7 @@
 package com.jdktomcat.demo.snowflake.generate.util;
 
+import java.net.SocketException;
+
 public class SnowflakeIdWorker {
 
     private final long twepoch = 1272643200000L;
@@ -89,10 +91,19 @@ public class SnowflakeIdWorker {
     }
 
     public synchronized static long createTableId() {
-        SnowflakeIdWorker snowflakeIdFactory = new SnowflakeIdWorker(0, 1);
+        SnowflakeIdWorker snowflakeIdFactory = new SnowflakeIdWorker(SnowflakeIdWorker.getLocalWorkId(), 1);
         return snowflakeIdFactory.nextId();
     }
-    // ==============================Methods==========================================
+
+    /**
+     * 获取本地机器标示
+     *
+     * @return 机器id
+     */
+    private static long getLocalWorkId(){
+        return NetworkUtil.ipv4ToLong(NetworkUtil.getLocalIp());
+    }
+
 
     /**
      * Get the next ID (this method is thread safe)
