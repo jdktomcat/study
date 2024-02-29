@@ -18,11 +18,10 @@ spring:
 
 logging:
   level:
-    com:
-      jdktomcat:
-        demo:
-          rocketmq:
-            consumer: info
+    root: info
+  file:
+    name: consumer.log
+
 
 rocketmq:
   namesrvAddr: 172.31.184.43:9876
