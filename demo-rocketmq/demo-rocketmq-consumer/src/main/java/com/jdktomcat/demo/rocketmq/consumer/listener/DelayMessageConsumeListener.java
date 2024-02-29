@@ -1,6 +1,5 @@
 package com.jdktomcat.demo.rocketmq.consumer.listener;
 
-import com.alibaba.fastjson.JSONObject;
 import com.jdktomcat.demo.rocketmq.consumer.component.RedisComponent;
 import com.jdktomcat.demo.rocketmq.consumer.constant.RocketMQConstant;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -32,15 +32,7 @@ public class DelayMessageConsumeListener extends BaseConsumerListener {
                     Object value = redisComponent.get(body);
                     String valueString = (value == null ? "" : value.toString());
                     if (StringUtils.isEmpty(valueString)) {
-                        JSONObject bodyObject = JSONObject.parseObject(body);
-                        String key = bodyObject.getString("data");
-                        if (StringUtils.isNotEmpty(key)) {
-                            valueString = redisComponent.getPlainString(key);
-                            if (StringUtils.isEmpty(valueString)) {
-                                log.info("银行编码已被校验：{}", body);
-                                return;
-                            }
-                        }
+                        redisComponent.setIfAbsent(body,body,3, TimeUnit.SECONDS);
                     }
                     log.warn("商户订单{}银行回单编码验证确认超时", body);
                 }

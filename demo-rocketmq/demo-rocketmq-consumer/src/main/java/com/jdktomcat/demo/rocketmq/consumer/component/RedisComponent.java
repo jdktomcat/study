@@ -1,11 +1,14 @@
 package com.jdktomcat.demo.rocketmq.consumer.component;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -117,7 +120,7 @@ public class RedisComponent {
      * @return 缓存字符串
      */
     public String getPlainString(String key) {
-        return (String) redisStringTemplate.execute((RedisCallback<String>) connection -> {
+        return redisStringTemplate.execute((RedisCallback<String>) connection -> {
             byte[] bytes = connection.get(key.getBytes(StandardCharsets.UTF_8));
             if (bytes != null && bytes.length != 0) {
                 return new String(bytes, StandardCharsets.UTF_8);
@@ -125,4 +128,27 @@ public class RedisComponent {
             return "";
         });
     }
+
+    /**
+     * 设值,只有在不存在的情况下才设置成功
+     *
+     * @param key      键
+     * @param value    值
+     * @param timeout  超时时长
+     * @param timeUnit 单位
+     * @return true 设置成功 false 设置失败
+     */
+    public boolean setIfAbsent(String key, String value, long timeout, TimeUnit timeUnit) {
+        if (!StringUtils.isEmpty(key) && !StringUtils.isEmpty(value)) {
+            Object result = redisStringTemplate.execute((RedisCallback<Boolean>) connection -> {
+                Boolean setResult = connection.set(key.getBytes(StandardCharsets.UTF_8), value.getBytes(StandardCharsets.UTF_8), Expiration.from(timeout, timeUnit), RedisStringCommands.SetOption.SET_IF_ABSENT);
+                log.info("redis设值缓存,connection:{} key:{} value:{} timeout:{} unit:{} result:{}", connection, key, value, timeout, timeUnit, setResult);
+                return setResult;
+            });
+            log.info("redis设值缓存,key:{} value:{} timeout:{} unit:{} result:{}", key, value, timeout, timeUnit, result);
+            return Boolean.TRUE.equals(result);
+        }
+        return false;
+    }
+
 }
