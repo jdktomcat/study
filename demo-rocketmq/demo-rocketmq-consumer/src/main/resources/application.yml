@@ -21,7 +21,7 @@ logging:
     com:
       jdktomcat:
         demo:
-          limiter:
+          rocketmq:
             consumer: info
 
 rocketmq:
@@ -31,5 +31,3 @@ rocketmq:
     consumeThreadMin: 20
     consumeThreadMax: 64
     batchMaxSize: 1
-
-
