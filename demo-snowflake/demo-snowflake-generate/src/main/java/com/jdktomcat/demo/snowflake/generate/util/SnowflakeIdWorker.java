@@ -1,7 +1,5 @@
 package com.jdktomcat.demo.snowflake.generate.util;
 
-import java.net.SocketException;
-
 public class SnowflakeIdWorker {
 
     private final long twepoch = 1272643200000L;
