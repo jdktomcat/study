@@ -8,6 +8,14 @@ rocketmq:
     maxMessageSize: 131072
     group: timmy-group
 
+
+logging:
+  level:
+    root: info
+  file:
+    path: /home/timmy/workspace/hand-run/rocketmq/producer/log
+    name: producer.log
+
 demo:
   rocketmq:
     topic: telegram_send_topic:telegram_send_normal_tag

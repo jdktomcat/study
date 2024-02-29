@@ -20,8 +20,7 @@ logging:
   level:
     root: info
   file:
-    name: consumer.log
-
+    path: /home/timmy/workspace/hand-run/rocketmq/consumer/log
 
 rocketmq:
   namesrvAddr: 172.31.184.43:9876
