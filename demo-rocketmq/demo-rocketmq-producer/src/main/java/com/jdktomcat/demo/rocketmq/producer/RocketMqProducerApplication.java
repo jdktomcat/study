@@ -48,7 +48,7 @@ public class RocketMqProducerApplication implements CommandLineRunner {
 
     private void sendDelayMessage() {
         int i = 0;
-        while (i++ < 100000) {
+        while (i++ < 1000000) {
             SendResult sendResult = messageProducerComponent.sendDelayMessage("JSTWZ20240229153150E19M", key+i);
             log.info("syncSend to sendResult:{}", sendResult);
         }
