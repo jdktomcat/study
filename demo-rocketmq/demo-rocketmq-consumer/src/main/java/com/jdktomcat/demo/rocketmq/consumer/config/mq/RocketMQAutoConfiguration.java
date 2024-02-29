@@ -52,7 +52,7 @@ public class RocketMQAutoConfiguration {
      */
     private DefaultMQPushConsumer getDefaultMQPushConsumer(String suffix, BaseConsumerListener listener){
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(properties.getConsumerProperties().getGroupName().concat(suffix));
-        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
         consumer.setNamesrvAddr(properties.getNamesrvAddr());
         consumer.setInstanceName(UUID.randomUUID().toString());
         consumer.setConsumeThreadMin(properties.getConsumerProperties().getConsumeThreadMin());
