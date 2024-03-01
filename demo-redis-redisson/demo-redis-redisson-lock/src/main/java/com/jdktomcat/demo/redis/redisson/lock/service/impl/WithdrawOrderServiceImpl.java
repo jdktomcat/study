@@ -67,7 +67,7 @@ public class WithdrawOrderServiceImpl implements IWithdrawOrderService {
         int update1 = withdrawOrderMapper.update(updateEntry1, new QueryWrapper<WithdrawOrder>().eq("order_id",TARGETS_ONE[0]));
         log.info("action one update1:{}",update1);
         try{
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(10);
         }catch (Exception ex){
             log.error("occur some exception!",ex);
         }
