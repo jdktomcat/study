@@ -5,6 +5,7 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,6 +21,7 @@ public class RedisComponent {
 
     @Autowired
     private RedissonClient redissonClient;
+
 
     public boolean tryLock(String lockKey, int waitTime, int leaseTime) {
         RLock lock = redissonClient.getLock(lockKey);

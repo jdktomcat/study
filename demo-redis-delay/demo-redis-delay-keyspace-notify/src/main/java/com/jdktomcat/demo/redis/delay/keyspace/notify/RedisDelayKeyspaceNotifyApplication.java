@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2023/11/13
  */
 @SpringBootApplication
-public class RedisLockApplication {
+public class RedisDelayKeyspaceNotifyApplication {
     public static void main(String[] args) {
-        SpringApplication.run(RedisLockApplication.class, args);
+        SpringApplication.run(RedisDelayKeyspaceNotifyApplication.class, args);
     }
 }
