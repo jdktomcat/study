@@ -14,15 +14,16 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Slf4j
 @Data
 public class TaskThreadPoolConfig {
-    @Value("${spring.task.pool.corePoolSize:20}")
+
+    @Value("${spring.task.pool.core:20}")
     private int corePoolSize;
-    @Value("${spring.task.pool.maxPoolSize:100}")
+    @Value("${spring.task.pool.max:100}")
     private int maxPoolSize;
-    @Value("${spring.task.pool.queueCapacity:1000}")
+    @Value("${spring.task.pool.queue:1000}")
     private int queueCapacity;
-    @Value("${spring.task.pool.keepAliveSeconds:180}")
+    @Value("${spring.task.pool.keepAlive:180}")
     private int keepAliveSeconds;
-    @Value("${spring.task.pool.threadNamePrefix:taskAsyncPool}")
+    @Value("${spring.task.pool.prefix:taskAsyncPool}")
     private String threadNamePrefix;
 
     @Bean

@@ -31,11 +31,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class RedisClusterNodeFactory {
 
-    @Value("${spring.redis.password:JnWgl1aXjjdjZK8ZuX5c}")
+    @Value("${spring.data.redis.password:JnWgl1aXjjdjZK8ZuX5c}")
     private String rPwd;
 
 
-    @Value("${spring.redis.serverName:MatchupPayHub}")
+    @Value("${spring.data.redis.serverName:RedisDelay}")
     private String serverName;
 
     @Resource
@@ -51,7 +51,7 @@ public class RedisClusterNodeFactory {
     /**
      * 用于存储已经启动监听的master节点信息
      */
-    private ConcurrentHashMap<String, String> masterNodeMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, String> masterNodeMap = new ConcurrentHashMap<>();
     
     @Scheduled(cron = "0/5 * * * * ?")
     public void refreshClusterNode() {
