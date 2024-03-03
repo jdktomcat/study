@@ -1,6 +1,7 @@
 
 package com.jdktomcat.demo.redis.delay.keyspace.notify.scheduled;
 
+import com.jdktomcat.demo.redis.delay.keyspace.notify.component.RedisComponent;
 import com.jdktomcat.demo.redis.delay.keyspace.notify.listener.KeyExpiredListener;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,9 @@ public class RedisClusterNodeFactory {
 
     @Autowired
     private ThreadPoolTaskExecutor taskAsyncPool;
+
+    @Autowired
+    private RedisComponent redisComponent;
 
 
     /**
@@ -100,5 +104,11 @@ public class RedisClusterNodeFactory {
                 masterNodeMap.remove(key);
             }
         });
+    }
+
+    @Scheduled(cron = "0/2 * * * * ?")
+    public void generateData() {
+        log.info("generateData run");
+
     }
 }

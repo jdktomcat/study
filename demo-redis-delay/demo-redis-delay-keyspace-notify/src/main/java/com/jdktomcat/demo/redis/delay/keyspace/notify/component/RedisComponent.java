@@ -43,4 +43,6 @@ public class RedisComponent {
             log.error("redis Exception: {}", e.getMessage(), e);
         }
     }
+
+
 }

@@ -1,6 +1,7 @@
-package com.jdktomcat.demo.redis.redisson.lock.component.lock;
+package com.jdktomcat.demo.redis.delay.zset.component.lock;
 
-import com.jdktomcat.demo.redis.redisson.lock.component.RedisComponent;
+import com.jdktomcat.demo.redis.delay.zset.component.RedisComponent;
+import com.jdktomcat.demo.redis.delay.zset.component.lock.RedisLockDef;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
