@@ -15,6 +15,7 @@
     <modules>
         <module>demo-redis-delay-zset</module>
         <module>demo-redis-delay-keyspace-notify</module>
+        <module>demo-redis-delay-producer</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

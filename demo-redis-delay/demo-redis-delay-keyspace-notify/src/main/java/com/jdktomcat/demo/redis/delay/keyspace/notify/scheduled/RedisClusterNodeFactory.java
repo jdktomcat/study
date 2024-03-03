@@ -1,7 +1,6 @@
 
 package com.jdktomcat.demo.redis.delay.keyspace.notify.scheduled;
 
-import com.jdktomcat.demo.redis.delay.keyspace.notify.component.RedisComponent;
 import com.jdktomcat.demo.redis.delay.keyspace.notify.listener.KeyExpiredListener;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -48,9 +47,6 @@ public class RedisClusterNodeFactory {
     @Autowired
     private ThreadPoolTaskExecutor taskAsyncPool;
 
-    @Autowired
-    private RedisComponent redisComponent;
-
 
     /**
      * 用于存储已经启动监听的master节点信息
@@ -59,7 +55,6 @@ public class RedisClusterNodeFactory {
     
     @Scheduled(cron = "0/5 * * * * ?")
     public void refreshClusterNode() {
-        log.info("refreshClusterNode run");
         RedisClusterConnection clusterConnection = redisConnectionFactory.getClusterConnection();
         Iterable<RedisClusterNode> redisClusterNodes = clusterConnection.clusterGetNodes();
         // 用于获取当前的master节点信息
@@ -104,11 +99,5 @@ public class RedisClusterNodeFactory {
                 masterNodeMap.remove(key);
             }
         });
-    }
-
-    @Scheduled(cron = "0/2 * * * * ?")
-    public void generateData() {
-        log.info("generateData run");
-
     }
 }
