@@ -1,4 +1,4 @@
-package com.jdktomcat.demo.redis.redisson.lock;
+package com.jdktomcat.demo.redis.delay.zset;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

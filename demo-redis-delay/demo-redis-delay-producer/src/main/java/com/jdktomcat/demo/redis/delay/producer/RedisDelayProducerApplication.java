@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author ZF-Timmy
@@ -31,8 +30,11 @@ public class RedisDelayProducerApplication implements CommandLineRunner {
     public void run(String... args) {
         int i = 0;
         while (i++ < 1000000) {
-            boolean result = redisComponent.setString("key"+i, RandomStringUtils.randomAscii(10), RandomUtils.nextInt(1,10));
-            log.info("保存信息 :{}", result);
+            String key = "key"+i;
+            String value = RandomStringUtils.randomAscii(10);
+            int timeout = RandomUtils.nextInt(1,10);
+            boolean result = redisComponent.setString(key, value, timeout);
+            log.info("保存信息 key:{} value:{} timeout:{} result:{}", key,value,timeout,result);
         }
     }
 }
