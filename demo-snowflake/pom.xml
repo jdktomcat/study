@@ -14,6 +14,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>demo-snowflake-generate</module>
+        <module>demo-snowflake-redis</module>
     </modules>
 
     <properties>
