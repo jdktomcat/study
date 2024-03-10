@@ -1,4 +1,4 @@
-package com.jdktomcat.demo.snowflake.generate.util;
+package com.jdktomcat.demo.snowflake.redis.util;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -93,7 +93,7 @@ public class SnowflakeIdWorker {
     }
 
     public static synchronized long createTableId() {
-        return createTableId(0, 1);
+        return createTableId(1, 1);
     }
 
     public static synchronized long createTableId(long workerId, long datacenterId) {
