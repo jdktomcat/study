@@ -93,7 +93,7 @@ public class SnowflakeIdWorker {
     }
 
     public static synchronized long createTableId() {
-        return createTableId(1, 1);
+        return createTableId(0, 1);
     }
 
     public static synchronized long createTableId(long workerId, long datacenterId) {
