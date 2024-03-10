@@ -73,8 +73,6 @@ public class SnowflakeIdWorker {
      */
     private static volatile long lastTimestamp = -1L;
 
-    //==============================Constructors=====================================
-
     /**
      * Constructor
      *
