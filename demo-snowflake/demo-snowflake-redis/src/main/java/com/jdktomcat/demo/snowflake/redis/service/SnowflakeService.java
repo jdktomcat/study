@@ -1,7 +1,7 @@
 package com.jdktomcat.demo.snowflake.redis.service;
 
-import com.jdktomcat.demo.snowflake.generate.util.SnowflakeIdWorker;
 import com.jdktomcat.demo.snowflake.redis.component.RedisComponent;
+import com.jdktomcat.demo.snowflake.redis.util.SnowflakeIdWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
